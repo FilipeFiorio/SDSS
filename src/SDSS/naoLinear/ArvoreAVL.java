@@ -1,16 +1,15 @@
-package template;
+package SDSS.naoLinear;
 
-import br.com.davidbuzatto.jsge.image.Image;
+import aaa.*;
 
 /**
  *
  * @author filipe
  */
-public class ArvoreBinaria extends JanelaArvore{
+public class ArvoreAVL extends JanelaArvore{
     
-    public ArvoreBinaria(Image logo) {
-        super("Binary Tree");
-        setIconImage(logo.buffImage);
+    public ArvoreAVL() {
+        super("Árvore AVL");
     }
     
     @Override

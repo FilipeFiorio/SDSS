@@ -1,5 +1,6 @@
-package template;
+package SDSS.naoLinear;
 
+import aaa.*;
 import br.com.davidbuzatto.jsge.image.Image;
 
 /**
@@ -8,9 +9,8 @@ import br.com.davidbuzatto.jsge.image.Image;
  */
 public class ArvoreRN extends JanelaArvore{
     
-    public ArvoreRN(Image logo) {
-        super("Red-Black Tree");
-        setIconImage(logo.buffImage);
+    public ArvoreRN() {
+        super("Árvore Vermelha e Preta");
     }
     
     @Override
