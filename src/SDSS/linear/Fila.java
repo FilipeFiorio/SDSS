@@ -40,8 +40,9 @@ public class Fila extends EngineFrame {
     private GuiButton botaoFecharExplicacao;
     
     private final Color corFundoEscurecido = new Color(40, 40, 40, 40);
-    private final Color corBotao = new Color(0, 128, 0);
-
+    private final Color corBotao = new Color(42, 42, 52);
+    private final Color corBackground = new Color(172, 172, 214);
+   
     private List<GuiComponent> listaBotoes;
     private List<Peca> pecas;
     private List<String> chamadasMetodos;
@@ -197,7 +198,7 @@ public class Fila extends EngineFrame {
     @Override
     public void draw() {
 
-        clearBackground(WHITE);
+        clearBackground(corBackground);
         
         setFontName(FONT_SANS_SERIF);
         setFontStyle(FONT_BOLD);
@@ -217,24 +218,24 @@ public class Fila extends EngineFrame {
         
         if (mostrarAvisoLimite) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(220, 140, 367, 40, GRAY);
-            fillRectangle(215, 135, 367, 40, WHITE);
+            fillRectangle(220, 140, 367, 40, corBackground.darker());
+            fillRectangle(215, 135, 367, 40, corBackground);
             drawRectangle(215, 135, 367, 40, BLACK);
             drawText("LIMITE DA FILA EXCEDIDO!", 220, 150, 24, BLACK);
         }
 
         if (mostrarAvisoVazio) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(267, 140, 272, 40, GRAY);
-            fillRectangle(262, 135, 272, 40, WHITE);
+            fillRectangle(267, 140, 272, 40, corBackground.darker());
+            fillRectangle(262, 135, 272, 40, corBackground);
             drawRectangle(262, 135, 272, 40, BLACK);
             drawText("A FILA ESTÁ VAZIA!", 268, 150, 24, BLACK);
         }
 
         if (mostrarExplicacao) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(220, 185, 350, 300, GRAY);
-            fillRectangle(215, 180, 350, 300, WHITE);
+            fillRectangle(220, 185, 350, 300, corBackground.darker());
+            fillRectangle(215, 180, 350, 300, corBackground);
             drawRectangle(215, 180, 350, 300, BLACK);
 
             drawText(
@@ -257,8 +258,6 @@ public class Fila extends EngineFrame {
             botaoFecharExplicacao.draw();
 
         }
-        
-        System.out.println(measureText("LIMITE DA FILA EXCEDIDO!", 24));
         
         if(tamanho > 0) {
             drawText("↑Início", 200, 360, 12, BLACK);

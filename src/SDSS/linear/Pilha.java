@@ -40,7 +40,8 @@ public class Pilha extends EngineFrame {
     private GuiButton botaoFecharExplicacao;
 
     private final Color corFundoEscurecido = new Color(40, 40, 40, 40);
-    private final Color corBotao = new Color(0, 128, 0);
+    private final Color corBotao = new Color(42, 42, 52);
+    private final Color corBackground = new Color(172, 172, 214);
 
     private List<GuiComponent> listaBotoes;
     private List<Peca> pecas;
@@ -196,7 +197,7 @@ public class Pilha extends EngineFrame {
     @Override
     public void draw() {
 
-        clearBackground(WHITE);
+        clearBackground(corBackground);
 
         setFontName(FONT_SANS_SERIF);
         setFontStyle(FONT_BOLD);
@@ -216,24 +217,24 @@ public class Pilha extends EngineFrame {
 
         if (mostrarAvisoLimite) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(209, 140, 392, 40, GRAY);
-            fillRectangle(204, 135, 392, 40, WHITE);
+            fillRectangle(209, 140, 392, 40, corBackground.darker());
+            fillRectangle(204, 135, 392, 40, corBackground);
             drawRectangle(204, 135, 392, 40, BLACK);
             drawText("LIMITE DA PILHA EXCEDIDO!", 209, 150, 24, BLACK);
         }
 
         if (mostrarAvisoVazio) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(257, 140, 292, 40, GRAY);
-            fillRectangle(252, 135, 292, 40, WHITE);
+            fillRectangle(257, 140, 292, 40, corBackground.darker());
+            fillRectangle(252, 135, 292, 40, corBackground);
             drawRectangle(252, 135, 292, 40, BLACK);
             drawText("A PILHA ESTÁ VAZIA!", 257, 150, 24, BLACK);
         }
 
         if (mostrarExplicacao) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(225, 185, 340, 300, GRAY);
-            fillRectangle(220, 180, 340, 300, WHITE);
+            fillRectangle(225, 185, 340, 300, corBackground.darker());
+            fillRectangle(220, 180, 340, 300, corBackground);
             drawRectangle(220, 180, 340, 300, BLACK);
             drawText(
                     """
@@ -259,7 +260,7 @@ public class Pilha extends EngineFrame {
         if (tamanho > 0) {
             drawText("Topo ->", 70, 540 - tamanho * 40, 14, BLACK);
         }
-
+        
     }
 
     private void pop() {

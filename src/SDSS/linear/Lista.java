@@ -51,8 +51,9 @@ public class Lista extends EngineFrame {
     private GuiInputDialog entradaIndex;
 
     private final Color corFundoEscurecido = new Color(40, 40, 40, 40);
-    private final Color corBotao = new Color(0, 128, 0);
-
+    private final Color corBotao = new Color(42, 42, 52);
+    private final Color corBackground = new Color(172, 172, 214);
+   
     private List<GuiComponent> listaBotoes;
     private List<Peca> pecas;
     private List<String> chamadasMetodos;
@@ -269,7 +270,7 @@ public class Lista extends EngineFrame {
     @Override
     public void draw() {
 
-        clearBackground(WHITE);
+        clearBackground(corBackground);
 
         setFontName(FONT_SANS_SERIF);
         setFontStyle(FONT_BOLD);
@@ -292,32 +293,32 @@ public class Lista extends EngineFrame {
 
         if (mostrarAvisoLimite) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(211.5, 140, 387, 40, GRAY);
-            fillRectangle(206.5, 135, 387, 40, WHITE);
+            fillRectangle(211.5, 140, 387, 40, corBackground.darker());
+            fillRectangle(206.5, 135, 387, 40, corBackground);
             drawRectangle(206.5, 135, 387, 40, BLACK);
             drawText("LIMITE DA LISTA EXCEDIDO!", 211.5, 150, 24, BLACK);
         }
 
         if (mostrarAvisoIndex) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(279, 140, 252, 40, GRAY);
-            fillRectangle(274, 135, 252, 40, WHITE);
+            fillRectangle(279, 140, 252, 40, corBackground.darker());
+            fillRectangle(274, 135, 252, 40, corBackground);
             drawRectangle(274, 135, 252, 40, BLACK);
             drawText("ÍNDICE INVÁLIDO!", 279, 150, 24, BLACK);
         }
 
         if (mostrarAvisoVazio) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(259.5, 140, 291, 40, GRAY);
-            fillRectangle(254.5, 135, 291, 40, WHITE);
+            fillRectangle(259.5, 140, 291, 40, corBackground.darker());
+            fillRectangle(254.5, 135, 291, 40, corBackground);
             drawRectangle(254.5, 135, 291, 40, BLACK);
             drawText("A LISTA ESTÁ VAZIA!", 254.5, 150, 24, BLACK);
         }
 
         if (mostrarExplicacao) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(220, 185, 350, 300, GRAY);
-            fillRectangle(215, 180, 350, 300, WHITE);
+            fillRectangle(220, 185, 350, 300, corBackground.darker());
+            fillRectangle(215, 180, 350, 300, corBackground);
             drawRectangle(215, 180, 350, 300, BLACK);
 
             drawText(
@@ -339,8 +340,6 @@ public class Lista extends EngineFrame {
 
         }
         
-        System.out.println(measureText("LIMITE DA LISTA EXCEDIDO!", 24));
-
 
         entradaIndex.draw();
     }

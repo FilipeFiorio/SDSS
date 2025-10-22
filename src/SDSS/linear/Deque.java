@@ -47,8 +47,9 @@ public class Deque extends EngineFrame {
     private GuiButton botaoFecharExplicacao;
 
     private final Color corFundoEscurecido = new Color(40, 40, 40, 40);
-    private final Color corBotao = new Color(0, 128, 0);
-
+    private final Color corBotao = new Color(42, 42, 52);
+    private final Color corBackground = new Color(172, 172, 214);
+    
     private List<GuiComponent> listaBotoes;
     private List<Peca> pecas;
     private List<String> chamadasMetodos;
@@ -233,7 +234,7 @@ public class Deque extends EngineFrame {
     @Override
     public void draw() {
 
-        clearBackground(WHITE);
+        clearBackground(corBackground);
 
         setFontName(FONT_SANS_SERIF);
         setFontStyle(FONT_BOLD);
@@ -253,24 +254,24 @@ public class Deque extends EngineFrame {
 
         if (mostrarAvisoLimite) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(203.7, 140, 403, 40, GRAY);
-            fillRectangle(198.7, 135, 403, 40, WHITE);
+            fillRectangle(203.7, 140, 403, 40, corBackground.darker());
+            fillRectangle(198.7, 135, 403, 40, corBackground);
             drawRectangle(198.7, 135, 403, 40, BLACK);
             drawText("LIMITE DO DEQUE EXCEDIDO!", 203.7, 150, 24, BLACK);
         }
 
         if (mostrarAvisoVazio) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(251, 140, 308, 40, GRAY);
-            fillRectangle(246, 135, 308, 40, WHITE);
+            fillRectangle(251, 140, 308, 40, corBackground.darker());
+            fillRectangle(246, 135, 308, 40, corBackground);
             drawRectangle(246, 135, 308, 40, BLACK);
             drawText("O DEQUE ESTÁ VAZIO!", 251, 150, 24, BLACK);
         }
 
         if (mostrarExplicacao) {
             fillRectangle(0, 0, 800, 620, corFundoEscurecido);
-            fillRectangle(220, 185, 350, 300, GRAY);
-            fillRectangle(215, 180, 350, 300, WHITE);
+            fillRectangle(220, 185, 350, 300, corBackground.darker());
+            fillRectangle(215, 180, 350, 300, corBackground);
             drawRectangle(215, 180, 350, 300, BLACK);
 
             drawText(

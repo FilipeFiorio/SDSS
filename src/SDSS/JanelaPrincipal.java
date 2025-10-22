@@ -1,5 +1,9 @@
 package SDSS;
 
+import SDSS.linear.Deque;
+import SDSS.linear.Fila;
+import SDSS.linear.Lista;
+import SDSS.linear.Pilha;
 import SDSS.naoLinear.ArvoreAVL;
 import SDSS.naoLinear.ArvoreBinaria;
 import SDSS.naoLinear.ArvoreRN;
@@ -22,7 +26,8 @@ public class JanelaPrincipal extends EngineFrame {
     
     private double xIniBotao;
     private double yIniBotao;
-    private double espacamento;
+    private double espacamentoLinear;
+    private double espacamentoNaoLinear;
     
     private RoundRectangle botaoPilha;
     private RoundRectangle botaoFila;
@@ -65,11 +70,17 @@ public class JanelaPrincipal extends EngineFrame {
         
         xIniBotao = 20;
         yIniBotao = 120;
-        espacamento = (getScreenWidth() - 50) / 3;
+        espacamentoLinear = (getScreenWidth() - 50 ) / 4;
+        espacamentoNaoLinear = (getScreenWidth() - 50) / 3;
         
-        botaoArvoreBinaria = new RoundRectangle(xIniBotao, yIniBotao, espacamento, 580, 20);
-        botaoArvoreAVL = new RoundRectangle(xIniBotao + espacamento + 10, yIniBotao, espacamento, 580, 20);
-        botaoArvoreRN = new RoundRectangle(xIniBotao + 2 * espacamento + 10, yIniBotao, espacamento, 580, 20);
+        botaoArvoreBinaria = new RoundRectangle(xIniBotao, yIniBotao, espacamentoNaoLinear, 580, 20);
+        botaoArvoreAVL = new RoundRectangle(xIniBotao + espacamentoNaoLinear + 10, yIniBotao, espacamentoNaoLinear, 580, 20);
+        botaoArvoreRN = new RoundRectangle(xIniBotao + 2 * espacamentoNaoLinear + 10, yIniBotao, espacamentoNaoLinear, 580, 20);
+        
+        botaoPilha = new RoundRectangle( xIniBotao, yIniBotao, espacamentoLinear, 580, 20);
+        botaoFila = new RoundRectangle( xIniBotao + espacamentoLinear + 10, yIniBotao, espacamentoLinear, 580, 20);
+        botaoDeque = new RoundRectangle( xIniBotao + 2 * espacamentoLinear + 10, yIniBotao, espacamentoLinear, 580, 20);
+        botaoLista = new RoundRectangle( xIniBotao + 3 * espacamentoLinear + 10, yIniBotao, espacamentoLinear, 580, 20);
         
         abaLineares = new RoundRectangle(10, 10, getScreenWidth() / 2 - 12.5, 95, 20);
         abaNaoLineares = new RoundRectangle(getScreenWidth() / 2 + 2.5, 10, getScreenWidth() / 2 - 15, 95, 20);
@@ -92,13 +103,13 @@ public class JanelaPrincipal extends EngineFrame {
         if (isMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (mostrarPainelLinear) {
                 if (mouseIn(botaoPilha)) {
-                    //abrirJanela(new Pilha());
+                    abrirJanela(new Pilha());
                 } else if (mouseIn(botaoFila)) {
-                    //abrirJanela(new Fila());
+                    abrirJanela(new Fila());
                 } else if (mouseIn(botaoDeque)) {
-                    //abrirJanela(new Deque());
+                    abrirJanela(new Deque());
                 } else if (mouseIn(botaoLista)) {
-                    //abrirJanela(new Fila());
+                    abrirJanela(new Lista());
                 }
             } else if (!mostrarPainelLinear) {
                 if (mouseIn(botaoArvoreBinaria)) {
@@ -150,18 +161,108 @@ public class JanelaPrincipal extends EngineFrame {
             drawImagemArvore(xIniBotao, yIniBotao, LIGHTGRAY, LIGHTGRAY);
             drawText("Árvore",184.5, 550, 24, LIGHTGRAY);
             drawText("Binária",184, 580, 24, LIGHTGRAY);
-            System.out.println(measureText("Rubro-Negra", 24));
 
             // Criando botao para a arvore AVL
-            drawImagemArvore(xIniBotao + espacamento + 10, yIniBotao, LIGHTGRAY, LIGHTGRAY);
-            drawText("Árvore", 184.5 + espacamento + 10, 550, 24, LIGHTGRAY);
-            drawText("AVL", 200 + espacamento + 10, 580, 24, LIGHTGRAY);
+            drawImagemArvore(xIniBotao + espacamentoNaoLinear + 10, yIniBotao, LIGHTGRAY, LIGHTGRAY);
+            drawText("Árvore", 184.5 + espacamentoNaoLinear + 10, 550, 24, LIGHTGRAY);
+            drawText("AVL", 200 + espacamentoNaoLinear + 10, 580, 24, LIGHTGRAY);
+            //Desenhando o simbolo da balança
+            fillTriangle(
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 10, 
+                    yIniBotao + 340, 
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 10, 
+                    yIniBotao + 380 , 
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 30, 
+                    yIniBotao + 380, 
+                    LIGHTGRAY
+            );
+            drawLine(
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 30,
+                    yIniBotao + 330,
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 50,
+                    yIniBotao + 350,
+                    LIGHTGRAY
+            );
+            drawLine(
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 29,
+                    yIniBotao + 331,
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 49,
+                    yIniBotao + 351,
+                    LIGHTGRAY
+            );
+            drawLine(
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 30, 
+                    yIniBotao + 330, 
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 40, 
+                    yIniBotao + 350, 
+                    LIGHTGRAY
+            );
+            drawLine(
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 30, 
+                    yIniBotao + 330, 
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 20, 
+                    yIniBotao + 350, 
+                    LIGHTGRAY
+            );
+            fillCircleSector(
+                    xIniBotao + 1.5 * espacamentoNaoLinear - 30,
+                    yIniBotao + 350, 
+                    10, 
+                    0, 
+                    180, 
+                    LIGHTGRAY
+            );
+            drawLine(
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 50, 
+                    yIniBotao + 350, 
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 40, 
+                    yIniBotao + 370, 
+                    LIGHTGRAY
+            );
+            drawLine(
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 50, 
+                    yIniBotao + 350, 
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 60, 
+                    yIniBotao + 370, 
+                    LIGHTGRAY
+            );
+            fillCircleSector(
+                    xIniBotao + 1.5 * espacamentoNaoLinear + 50,
+                    yIniBotao + 370,
+                    10,
+                    0,
+                    180,
+                    LIGHTGRAY
+            );
 
             // Criando botao para a arvore Rubro negra
-            drawImagemArvore(xIniBotao + 2 * espacamento + 10, yIniBotao, RED.darker(), GRAY.darker());
-            drawText("Árvore", 184.5 + 2 * espacamento + 10, 550, 24, LIGHTGRAY );
-            drawText("Rubro-Negra", 147.5 + 2 * espacamento + 10, 580, 24, LIGHTGRAY );
+            drawImagemArvore(xIniBotao + 2 * espacamentoNaoLinear + 10, yIniBotao, RED.darker(), LIGHTGRAY);
+            drawText("Árvore", 184.5 + 2 * espacamentoNaoLinear + 10, 550, 24, LIGHTGRAY );
+            drawText("Rubro-Negra", 147.5 + 2 * espacamentoNaoLinear + 10, 580, 24, LIGHTGRAY );
             
+        } else {
+            
+            if(mouseIn(botaoPilha)) {
+                botaoPilha.fill(this, corBotaoSelecionado);
+            } else if(mouseIn(botaoFila)) {
+                botaoFila.fill(this, corBotaoSelecionado);
+            } else if(mouseIn(botaoDeque)) {
+                botaoDeque.fill(this, corBotaoSelecionado);
+            } else if(mouseIn(botaoLista)) {
+                botaoLista.fill(this, corBotaoSelecionado);
+            }
+            
+            //Criando Bootao Pilha
+            drawImagemEstruturaLinear(xIniBotao, "Pilha");
+            
+            //Criando Botao fila
+            drawImagemEstruturaLinear(xIniBotao + espacamentoLinear + 10, "Fila");
+            
+            //Criando Botao Deque
+            drawImagemEstruturaLinear(xIniBotao + 2 * espacamentoLinear + 10, "Deque");
+            
+            //Criando Botao Lista
+            drawImagemEstruturaLinear(xIniBotao + 3 * espacamentoLinear + 10, "Lista");
         }
         
         drawText("Não Lineares", 888.5, 50, 24, LIGHTGRAY);
@@ -185,29 +286,53 @@ public class JanelaPrincipal extends EngineFrame {
         janela.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
-    private void drawImagemArvore(double xInicio, double yInicio, Color corPai, Color corFilho) {
+    private void drawImagemArvore(double xInicio, double yInicio, Color LinhaEsquerda, Color linhaDireita) {
 
         //Coordenas do no pai
-        double centroPaiX = xInicio + espacamento / 2;
-        double centroPaiY = yInicio + espacamento / 4;
+        double centroPaiX = xInicio + espacamentoNaoLinear / 2;
+        double centroPaiY = yInicio + espacamentoNaoLinear / 4;
         
         //coordenadas base do no filho
-        double centroFilhoX = xInicio + espacamento / 4;
+        double centroFilhoX = xInicio + espacamentoNaoLinear / 4;
         double centroFilhoY = 2 * centroPaiY;
         
         //desenha as linhas que conectam o pai com os filhos
-        drawLine(centroPaiX, centroPaiY, centroFilhoX, centroFilhoY, LIGHTGRAY);
-        drawLine(centroPaiX, centroPaiY, centroFilhoX + espacamento / 2, centroFilhoY, LIGHTGRAY);
+        drawLine(centroPaiX, centroPaiY, centroFilhoX, centroFilhoY, LinhaEsquerda);
+        drawLine(centroPaiX + 1, centroPaiY + 1, centroFilhoX + 1, centroFilhoY + 1, LinhaEsquerda);
+        drawLine(centroPaiX, centroPaiY, centroFilhoX + espacamentoNaoLinear / 2, centroFilhoY, linhaDireita);
+        drawLine(centroPaiX - 1, centroPaiY  - 1, centroFilhoX + espacamentoNaoLinear / 2 - 1, centroFilhoY - 1, linhaDireita);
         
         //desenha o nó pai
-        fillCircle(centroPaiX, centroPaiY, 48, corPai);
+        fillCircle(centroPaiX, centroPaiY, 48, LIGHTGRAY);
 
         //desenha o filho da esquerda
-        fillCircle(centroFilhoX, centroFilhoY, 48, corFilho);
+        fillCircle(centroFilhoX, centroFilhoY, 48, LIGHTGRAY);
 
         //desenha o filho da direita
-        fillCircle(centroFilhoX + espacamento / 2, centroFilhoY, 48, corFilho);
+        fillCircle(centroFilhoX + espacamentoNaoLinear / 2, centroFilhoY, 48, LIGHTGRAY);
 
+    }
+    
+    private void drawImagemEstruturaLinear(double xInicio, String nome) {
+        
+        double yBotao = yIniBotao + 72;
+        double xBotao = xInicio + espacamentoLinear / 4;
+        double altura = 300;
+        
+        drawRoundRectangle(xBotao, yBotao, espacamentoLinear / 2, altura, 10, LIGHTGRAY );
+        drawRoundRectangle(xBotao + 1, yBotao + 1, espacamentoLinear / 2 - 2, altura - 2, 10, LIGHTGRAY );
+        
+        for(int i = 1; i <= 3; i++) {
+            fillRoundRectangle(xBotao + 5, yBotao + altura - 35 * i, espacamentoLinear / 2 - 10, 30 , 10, LIGHTGRAY);
+        }
+        
+        drawText(
+                nome,
+                xInicio + (espacamentoLinear - measureText(nome, 24)) / 2,
+                550,
+                24,
+                LIGHTGRAY
+        );
     }
     
     public static void main(String[] args) {
