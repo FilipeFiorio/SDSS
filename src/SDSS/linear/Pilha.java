@@ -41,7 +41,7 @@ public class Pilha extends EngineFrame {
 
     private final Color corFundoEscurecido = new Color(40, 40, 40, 40);
     private final Color corBotao = new Color(42, 42, 52);
-    private final Color corBackground = new Color(172, 172, 214);
+    private final Color corBackground = new Color(230, 230, 255);
 
     private List<GuiComponent> listaBotoes;
     private List<Peca> pecas;

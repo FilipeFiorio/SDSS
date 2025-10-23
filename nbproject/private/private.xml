@@ -4,17 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/JanelaPrincipal.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/ArvoreRN.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/JanelaArvore.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/ArvoreAVL.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/Node.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/ArvoreBinaria.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/linear/Pilha.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/linear/Fila.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/linear/Peca.java</file>
             <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/linear/Lista.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/linear/PassoAnimacao.java</file>
-            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/linear/Deque.java</file>
         </group>
     </open-files>
 </project-private>

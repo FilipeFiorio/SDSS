@@ -43,7 +43,7 @@ public class JanelaPrincipal extends EngineFrame {
     
     private boolean mostrarPainelLinear;
     
-    private final Image logo = loadImage("resources/images/iconeSimulador.png");
+    private final Image logo = loadImage("resources/images/logoSDSS.png");
     
     public JanelaPrincipal() {
         

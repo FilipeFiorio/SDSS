@@ -4,7 +4,6 @@ import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
 import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.BLACK;
 import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.FONT_BOLD;
 import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.FONT_SANS_SERIF;
-import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.GRAY;
 import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.WHITE;
 import br.com.davidbuzatto.jsge.imgui.GuiButton;
 import br.com.davidbuzatto.jsge.imgui.GuiComponent;
@@ -13,6 +12,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import  SDSS.JanelaPrincipal;
 
 /**
  * Modelo de projeto básico da JSGE.
@@ -52,7 +52,7 @@ public class Lista extends EngineFrame {
 
     private final Color corFundoEscurecido = new Color(40, 40, 40, 40);
     private final Color corBotao = new Color(42, 42, 52);
-    private final Color corBackground = new Color(172, 172, 214);
+    private final Color corBackground = new Color(230, 230, 255);
    
     private List<GuiComponent> listaBotoes;
     private List<Peca> pecas;
@@ -274,6 +274,11 @@ public class Lista extends EngineFrame {
 
         setFontName(FONT_SANS_SERIF);
         setFontStyle(FONT_BOLD);
+        
+        entradaIndex.setBackgroundColor(corBackground);
+        entradaIndex.setTitleBarBackgroundColor(corBotao);
+        entradaIndex.setBorderColor(corBotao);
+        entradaIndex.setTitleBarTextColor(WHITE);
 
         drawText(strTamanho, 585, 100, 20, BLACK);
 
