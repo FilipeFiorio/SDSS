@@ -284,6 +284,7 @@ public class JanelaPrincipal extends EngineFrame {
     
     private void abrirJanela(EngineFrame janela) {
         janela.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        janela.setIconImage(logo.buffImage);
     }
     
     private void drawImagemArvore(double xInicio, double yInicio, Color LinhaEsquerda, Color linhaDireita) {

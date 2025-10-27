@@ -1,6 +1,5 @@
 package SDSS.naoLinear;
 
-import aaa.*;
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
 
 /**

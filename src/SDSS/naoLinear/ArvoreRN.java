@@ -1,8 +1,5 @@
 package SDSS.naoLinear;
 
-import aaa.*;
-import br.com.davidbuzatto.jsge.image.Image;
-
 /**
  *
  * @author filipe
