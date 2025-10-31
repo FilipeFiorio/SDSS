@@ -6,9 +6,11 @@ import SDSS.linear.Lista;
 import SDSS.linear.Pilha;
 import SDSS.naoLinear.ArvoreAVL;
 import SDSS.naoLinear.ArvoreBinaria;
-import SDSS.naoLinear.ArvoreRN;
+import SDSS.naoLinear.ArvoreVermelhaPreta;
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
+import br.com.davidbuzatto.jsge.geom.Rectangle;
 import br.com.davidbuzatto.jsge.geom.RoundRectangle;
+import br.com.davidbuzatto.jsge.geom.Triangle;
 import br.com.davidbuzatto.jsge.image.Image;
 import java.awt.Color;
 
@@ -117,7 +119,7 @@ public class JanelaPrincipal extends EngineFrame {
                 } else if (mouseIn(botaoArvoreAVL)) {
                     abrirJanela(new ArvoreAVL());
                 } else if (mouseIn(botaoArvoreRN)) {
-                    abrirJanela(new ArvoreRN());
+                    abrirJanela(new ArvoreVermelhaPreta());
                 }
             }
         }
@@ -335,6 +337,42 @@ public class JanelaPrincipal extends EngineFrame {
                 LIGHTGRAY
         );
     }
+    
+//    private void drawSeta(double xSeta, double ySeta, boolean invertida) {
+//        
+//        //Inicializando dimensoes
+//        double alturaTriangulo = 16;
+//        double alturaRetangulo = 24;
+//        double larguraRetangulo = 8;
+//        
+//        // inicializando valores para o retangulo
+//        double xRetangulo = xSeta + 10;
+//        double yRetangulo = ySeta + 30;
+//   
+//        
+//        // inicializando valores para o triangulo;
+//        double xV1 = xSeta;
+//        double xV3 = xSeta + larguraRetangulo + 10;
+//        double xV2 = (xV1 + xV3) / 2;
+//        double yV1 = ySeta - alturaTriangulo;
+//        double yV3 = xV1;
+//        double yV2 = ySeta;
+//        
+//        Rectangle retangulo = new Rectangle(xRetangulo, yRetangulo, larguraRetangulo, alturaRetangulo);
+//        Triangle triangulo =  new Triangle(xV1, yV1, xV2, yV2, xV3, yV3);
+//        
+//        if (invertida) {
+//            triangulo.y1  = triangulo.y1 + alturaRetangulo;
+//            triangulo.y2 =  triangulo.y2 + alturaRetangulo + 60;
+//            triangulo.y3 = triangulo.y3 + alturaRetangulo;
+//        }
+//        
+//        retangulo.fill(this, LIGHTGRAY);
+//        triangulo.fill(this, LIGHTGRAY);
+//        
+//             
+//  
+//    }
     
     public static void main(String[] args) {
         new JanelaPrincipal();

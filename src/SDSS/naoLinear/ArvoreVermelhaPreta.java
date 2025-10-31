@@ -4,9 +4,9 @@ package SDSS.naoLinear;
  *
  * @author filipe
  */
-public class ArvoreRN extends JanelaArvore{
+public class ArvoreVermelhaPreta extends JanelaArvore{
     
-    public ArvoreRN() {
+    public ArvoreVermelhaPreta() {
         super("Árvore Vermelha e Preta");
     }
     
