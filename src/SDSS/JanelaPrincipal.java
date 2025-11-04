@@ -23,7 +23,7 @@ import java.awt.Color;
  */
 public class JanelaPrincipal extends EngineFrame {
     
-    private final Color corBackground = new Color(60, 60, 75);
+    public  final Color corFundo = new Color(60, 60, 75);
     private final Color corBotaoSelecionado = new Color(100, 100, 100, 100);
     
     private double xIniBotao;
@@ -129,14 +129,14 @@ public class JanelaPrincipal extends EngineFrame {
     @Override
     public void draw() {
         
-        clearBackground(corBackground);
+        clearBackground(corFundo);
         
-        fillRoundRectangle(10, 110, getScreenWidth() - 20, getScreenHeight() - 120, 20, corBackground.darker());
+        fillRoundRectangle(10, 110, getScreenWidth() - 20, getScreenHeight() - 120, 20, corFundo.darker());
         
         if (mostrarPainelLinear) {
-            abaLineares.fill(this, corBackground.darker());
+            abaLineares.fill(this, corFundo.darker());
         } else {
-            abaNaoLineares.fill(this, corBackground.darker());
+            abaNaoLineares.fill(this, corFundo.darker());
         }
 
         // seta a fonte da janela para inter
@@ -256,6 +256,7 @@ public class JanelaPrincipal extends EngineFrame {
             
             //Criando Bootao Pilha
             drawImagemEstruturaLinear(xIniBotao, "Pilha");
+            drawSeta(xIniBotao, yIniBotao, false);
             
             //Criando Botao fila
             drawImagemEstruturaLinear(xIniBotao + espacamentoLinear + 10, "Fila");
@@ -275,7 +276,7 @@ public class JanelaPrincipal extends EngineFrame {
     }
 
     // metodo para verificar se o mouse clicou nos botoes criados manualmente
-    private boolean mouseIn(RoundRectangle r) {
+    public boolean mouseIn(RoundRectangle r) {
         
         double mouseX = getMouseX();
         double mouseY = getMouseY();
@@ -338,41 +339,39 @@ public class JanelaPrincipal extends EngineFrame {
         );
     }
     
-//    private void drawSeta(double xSeta, double ySeta, boolean invertida) {
-//        
-//        //Inicializando dimensoes
-//        double alturaTriangulo = 16;
-//        double alturaRetangulo = 24;
-//        double larguraRetangulo = 8;
-//        
-//        // inicializando valores para o retangulo
-//        double xRetangulo = xSeta + 10;
-//        double yRetangulo = ySeta + 30;
-//   
-//        
-//        // inicializando valores para o triangulo;
-//        double xV1 = xSeta;
-//        double xV3 = xSeta + larguraRetangulo + 10;
-//        double xV2 = (xV1 + xV3) / 2;
-//        double yV1 = ySeta - alturaTriangulo;
-//        double yV3 = xV1;
-//        double yV2 = ySeta;
-//        
-//        Rectangle retangulo = new Rectangle(xRetangulo, yRetangulo, larguraRetangulo, alturaRetangulo);
-//        Triangle triangulo =  new Triangle(xV1, yV1, xV2, yV2, xV3, yV3);
-//        
-//        if (invertida) {
-//            triangulo.y1  = triangulo.y1 + alturaRetangulo;
-//            triangulo.y2 =  triangulo.y2 + alturaRetangulo + 60;
-//            triangulo.y3 = triangulo.y3 + alturaRetangulo;
-//        }
-//        
-//        retangulo.fill(this, LIGHTGRAY);
-//        triangulo.fill(this, LIGHTGRAY);
-//        
-//             
-//  
-//    }
+    private void drawSeta(double xSeta, double ySeta, boolean invertida) {
+        
+        //Inicializando dimensoes
+        double alturaRetangulo = 24;
+        double larguraRetangulo = 5;
+        
+        // inicializando valores para o retangulo
+        double xRetangulo = xSeta + 5;
+        double yRetangulo = ySeta + 20;
+   
+        
+        // inicializando valores para o triangulo;
+        double xV1 = xSeta;
+        double xV3 = xSeta + larguraRetangulo + 5;
+        double xV2 = (xV1 + xV3) / 2;
+        double yV1 = yRetangulo;
+        double yV3 = yV1;
+        double yV2 = ySeta;
+        
+        Rectangle retangulo = new Rectangle(xRetangulo, yRetangulo, larguraRetangulo, alturaRetangulo);
+        Triangle triangulo =  new Triangle(xV1, yV1, xV2, yV2, xV3, yV3);
+        
+        if (invertida) {
+            triangulo.y1  = triangulo.y1 + alturaRetangulo;
+            triangulo.y2 =  triangulo.y2 + alturaRetangulo + 60;
+            triangulo.y3 = triangulo.y3 + alturaRetangulo;
+        }
+        
+        retangulo.fill(this, LIGHTGRAY);
+        triangulo.fill(this, LIGHTGRAY);
+            
+  
+    }
     
     public static void main(String[] args) {
         new JanelaPrincipal();

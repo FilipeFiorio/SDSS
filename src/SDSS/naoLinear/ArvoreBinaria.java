@@ -27,6 +27,6 @@ public class ArvoreBinaria extends JanelaArvore{
     public void draw() {
         super.draw();
         
-        drawArvore(nodes);
+        
     }
 }

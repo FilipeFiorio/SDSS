@@ -1,6 +1,15 @@
 package SDSS.naoLinear;
 
+import br.com.davidbuzatto.jsge.core.Camera2D;
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
+import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.BLACK;
+import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.RAYWHITE;
+import br.com.davidbuzatto.jsge.core.utils.ColorUtils;
+import br.com.davidbuzatto.jsge.geom.Rectangle;
+import br.com.davidbuzatto.jsge.geom.RoundRectangle;
+import br.com.davidbuzatto.jsge.imgui.GuiButton;
+import br.com.davidbuzatto.jsge.math.Vector2;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,65 +17,230 @@ import java.util.List;
  *
  * @author filipe
  */
-public class JanelaArvore extends EngineFrame{
-    
-    protected List<Node> nodes;
-    
+public class JanelaArvore extends EngineFrame {
+
+    private Camera2D camera;
+    private Rectangle bordaCamera;
+    private Rectangle teste;
+    private FocoCamera foco;
+    private Rectangle telaDesenhavel;
+    private RoundRectangle botaoHambHitBox;
+    private RoundRectangle bordaMenu;
+
+    private GuiButton botaoAdd;
+    private GuiButton botaoRemove;
+    private GuiButton botaoCriarAleatorio;
+    private GuiButton botaoLimpar;
+    private GuiButton botaoTransformacao1;
+    private GuiButton botaoTransformacao2;
+
+    private List<GuiButton> listaBotoes;
+
+    private boolean mostrarMenu;
+
+    private final Color corBackground = new Color(230, 230, 255);
+    private final Color corBotao = new Color(42, 42, 52);
+
     public JanelaArvore(String title) {
-    
-            super(
-            854,                 // largura                      / width
-            480,                 // algura                       / height
-            title,               // título                       / title
-            60,                  // quadros por segundo desejado / target FPS
-            true,                // suavização                   / antialiasing
-            true,                // redimensionável              / resizable
-            false,               // tela cheia                   / full screen
-            false,               // sem decoração                / undecorated
-            false,               // sempre no topo               / always on top
-            false                // fundo invisível              / invisible background
+
+        super(
+                854, // largura                      / width
+                480, // algura                       / height
+                title, // título                       / title
+                60, // quadros por segundo desejado / target FPS
+                true, // suavização                   / antialiasing
+                false, // redimensionável              / resizable
+                false, // tela cheia                   / full screen
+                false, // sem decoração                / undecorated
+                false, // sempre no topo               / always on top
+                false // fundo invisível              / invisible background
         );
     }
-    
+
     @Override
     public void create() {
-        
-        nodes = new ArrayList<>();
-        
+
+        useAsDependencyForIMGUI();
+
+        botaoHambHitBox = new RoundRectangle(getScreenWidth() - 50, 20, 25, 28, 1);
+        bordaMenu = new RoundRectangle(getScreenWidth() - 300, 70, 280, 160, 10);
+        mostrarMenu = false;
+
+        botaoAdd = new GuiButton(getScreenWidth() - 290, 80, 125, 40, "ADD");
+        botaoRemove = new GuiButton(getScreenWidth() - 155, 80, 125, 40, "REMOVE");
+        botaoLimpar = new GuiButton(getScreenWidth() - 290, 130, 125, 40, "LIMPAR");
+        botaoCriarAleatorio = new GuiButton(getScreenWidth() - 155, 130, 125, 40, "CRIAR ALEATÓRIO");
+        botaoTransformacao1 = new GuiButton(getScreenWidth() - 290, 180, 125, 40, "t1");
+        botaoTransformacao2 = new GuiButton(getScreenWidth() - 155, 180, 125, 40, "t2");
+
+        listaBotoes = new ArrayList<>();
+
+        listaBotoes.add(botaoAdd);
+        listaBotoes.add(botaoRemove);
+        listaBotoes.add(botaoLimpar);
+        listaBotoes.add(botaoCriarAleatorio);
+        listaBotoes.add(botaoTransformacao1);
+        listaBotoes.add(botaoTransformacao2);
+
+        teste = new Rectangle(getScreenWidth() / 2, getScreenHeight() / 2 - 10, 20, 500);
+        camera = new Camera2D();
+        telaDesenhavel = new Rectangle(0, 0, (getScreenWidth() - 100), getScreenHeight());
+
+        foco = new FocoCamera(new Vector2(telaDesenhavel.width / 2, telaDesenhavel.height / 2), new Vector2(10, 10), 500);
+        bordaCamera = new Rectangle(10, 10, telaDesenhavel.width / 2, telaDesenhavel.height / 2);
     }
-    
+
     @Override
     public void update(double delta) {
+
+        for (GuiButton b : listaBotoes) {
+            b.update(delta);
+            b.setTextColor(WHITE);
+            b.setBackgroundColor(corBotao);
+            b.setEnabled(mostrarMenu);
+            b.setVisible(mostrarMenu);
+        }
         
+//        if(botaoAdd.isMousePressed()) {
+//            add();
+//        } else if(botaoRemove.isMousePressed()) {
+//            remove();
+//        } else if(botaoCriarAleatorio.isMousePressed()) {
+//            criarAleatorio();
+//        } else if(botaoLimpar.isMousePressed()) {
+//            limpar();
+//        } else if(botaoTransformacao1.isMousePressed()) {
+//            transformacao1();
+//        } else if(botaoTransformacao2.isMousePressed()) {
+//            transformacao2();
+//        }
+        
+        if(mouseIn(botaoHambHitBox)) {
+            if(isMouseButtonPressed(MOUSE_BUTTON_LEFT) && mostrarMenu == false) {
+                mostrarMenu = true;
+            } else if(isMouseButtonPressed(MOUSE_BUTTON_LEFT) && mostrarMenu == true) {
+                mostrarMenu = false;
+            }
+        }
+
+        // Update para controlar a camera de visuazação das arvores
+        foco.update(delta, bordaCamera, this);
+
+        if (isKeyDown(KEY_DELETE)) {
+            camera.rotation--;
+        } else if (isKeyDown(KEY_PAGE_DOWN)) {
+            camera.rotation++;
+        }
+
+        if (isKeyDown(KEY_KP_ADD) || isKeyDown(KEY_EQUAL)) {
+            camera.zoom += 0.01;
+        } else if (isKeyDown(KEY_KP_SUBTRACT) || isKeyDown(KEY_MINUS)) {
+            camera.zoom -= 0.01;
+            if (camera.zoom < 0.1) {
+                camera.zoom = 0.1;
+            }
+        }
+
+        if (isKeyPressed(KEY_R)) {
+            camera.rotation = 0;
+            camera.zoom = 1;
+            foco.pos.x = telaDesenhavel.width / 2;
+            foco.pos.y = telaDesenhavel.height / 2;
+        }
+
+        atualizarCamera();
+
     }
-    
+
     @Override
     public void draw() {
-        
-        drawLine(getScreenWidth() - 100, 0, getScreenWidth() - 100, getScreenHeight(), BLACK);
-    }
-    
-    public void drawArvore(List<Node> nodes) {
-        for(Node n : nodes){
-            if(n.getNodeEsquerda() != null) {
-                Node novoNode = n.getNodeEsquerda();
-                drawLine(n.getCentroX(), n.getCentroY(), novoNode.getCentroX(), novoNode.getCentroY(), BLACK);
+
+        clearBackground(corBackground);
+
+        setFontName(FONT_SANS_SERIF);
+        setFontStyle(FONT_BOLD);
+
+        beginMode2D(camera);
+        telaDesenhavel.fill(this, GOLD);
+        bordaCamera.fill(this, GREEN);
+        teste.fill(this, LIME);
+        endMode2D();
+
+        drawInfo();
+
+        if (mouseIn(botaoHambHitBox)) {
+            for (int i = 1; i <= 3; i++) {
+                fillRoundRectangle(getScreenWidth() - 48, 20 + i * 6, 20, 4, 5, LIGHTGRAY);
             }
-            
-            if(n.getNodeDireita()!= null) {
-                Node novoNode = n.getNodeDireita();
-                drawLine(n.getCentroX(), n.getCentroY(), novoNode.getCentroX(), novoNode.getCentroY(), BLACK);
+        } else {
+            for (int i = 1; i <= 3; i++) {
+                fillRoundRectangle(getScreenWidth() - 48, 20 + i * 6, 20, 4, 5, GRAY);
             }
-            n.drawNode(this);
         }
-    }
-    
-    public void adicionarNode() {
+
+        if (mostrarMenu) {
+            bordaMenu.fill(this, corBackground);
+            bordaMenu.draw(this, BLACK);
+            for(GuiButton b : listaBotoes) {
+                b.draw();
+            }
+        }
         
     }
-    
-    public void removerNode() {
-        
+
+    private void drawInfo() {
+
+        fillRoundRectangle(5, 5, 340, 200, 10, ColorUtils.colorAlpha(RAYWHITE, 0.5));
+        drawRoundRectangle(5, 5, 340, 200, 10, BLACK);
+
+        drawText("<R> to reset", 210, 20, BLACK);
+
+        int y = 40;
+        int step = 18;
+
+        Vector2 playerScreen = camera.getWorldToScreen(foco.pos.x, foco.pos.y);
+        drawText("Player: ", 20, y, BLACK);
+        drawText(String.format(" World: (%.2f, %.2f)", foco.pos.x, foco.pos.y), 30, y += step, BLACK);
+        drawText(String.format("Screen: (%.2f, %.2f)", playerScreen.x, playerScreen.y), 30, y += step, BLACK);
+
+        y += step;
+
+        drawText("Camera: ", 20, y += step, BLACK);
+        drawText(String.format("  Target: (%.2f, %.2f)", camera.target.x, camera.target.y), 30, y += step, BLACK);
+        drawText(String.format("  Offset: (%.2f, %.2f)", camera.offset.x, camera.offset.y), 30, y += step, BLACK);
+        drawText(String.format("Rotation: %.2f (DEL/PG-Down)", camera.rotation), 30, y += step, BLACK);
+        drawText(String.format("    Zoom: %.2f (+/-)", camera.zoom), 30, y += step, BLACK);
+
+    }
+
+    private void atualizarCamera() {
+
+        camera.target.x = foco.pos.x;
+        camera.target.y = foco.pos.y;
+
+        camera.offset.x = getScreenWidth() / 10;
+        camera.offset.y = getScreenHeight() / 10;
+    }
+
+    private boolean mouseIn(RoundRectangle r) {
+
+        double mouseX = getMouseX();
+        double mouseY = getMouseY();
+
+        return mouseX >= r.x && mouseX <= r.width + r.x
+                && mouseY >= r.y && mouseY <= r.height + r.y;
     }
     
+//    public abstract void add();
+//    public abstract void remove();
+//    public abstract void limpar();
+//    public abstract void criarArvore();
+//    public abstract void transformacao1();
+//    public abstract void transformacao2();
+//
+//    public abstract void drawArvore();
+    
+    public static void main(String[] args) {
+        new JanelaArvore("testes");
+    }
 }
