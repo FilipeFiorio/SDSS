@@ -82,12 +82,14 @@ public class JanelaArvore extends EngineFrame {
         listaBotoes.add(botaoTransformacao1);
         listaBotoes.add(botaoTransformacao2);
 
-        teste = new Rectangle(getScreenWidth() / 2, getScreenHeight() / 2 - 10, 20, 500);
-        camera = new Camera2D();
-        telaDesenhavel = new Rectangle(0, 0, (getScreenWidth() - 100), getScreenHeight());
+        foco = new FocoCamera(new Vector2(getScreenWidth() / 2, getScreenHeight() / 2), new Vector2(10, 10), 500);
+        camera = new Camera2D(
+                new Vector2(foco.pos.x, foco.pos.y),
+                new Vector2(0, 0),
+                0,
+                1);
 
-        foco = new FocoCamera(new Vector2(telaDesenhavel.width / 2, telaDesenhavel.height / 2), new Vector2(10, 10), 500);
-        bordaCamera = new Rectangle(10, 10, telaDesenhavel.width / 2, telaDesenhavel.height / 2);
+        bordaCamera = new Rectangle(0, 0, getScreenWidth(), getScreenHeight());
     }
 
     @Override
@@ -144,8 +146,8 @@ public class JanelaArvore extends EngineFrame {
         if (isKeyPressed(KEY_R)) {
             camera.rotation = 0;
             camera.zoom = 1;
-            foco.pos.x = telaDesenhavel.width / 2;
-            foco.pos.y = telaDesenhavel.height / 2;
+            foco.pos.x = getScreenWidth() / 2;
+            foco.pos.y = getScreenHeight() / 2;
         }
 
         atualizarCamera();
@@ -161,9 +163,7 @@ public class JanelaArvore extends EngineFrame {
         setFontStyle(FONT_BOLD);
 
         beginMode2D(camera);
-        telaDesenhavel.fill(this, GOLD);
         bordaCamera.fill(this, GREEN);
-        teste.fill(this, LIME);
         endMode2D();
 
         drawInfo();
@@ -218,8 +218,8 @@ public class JanelaArvore extends EngineFrame {
         camera.target.x = foco.pos.x;
         camera.target.y = foco.pos.y;
 
-        camera.offset.x = getScreenWidth() / 10;
-        camera.offset.y = getScreenHeight() / 10;
+        camera.offset.x = 0;
+        camera.offset.y = 0;
     }
 
     private boolean mouseIn(RoundRectangle r) {
