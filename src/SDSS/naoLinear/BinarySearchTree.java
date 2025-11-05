@@ -1,4 +1,3 @@
-
 package SDSS.naoLinear;
 
 import aesd.ds.implementations.linear.LinkedQueue;
