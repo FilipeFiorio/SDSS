@@ -4,6 +4,6 @@ package SDSS.naoLinear;
  *
  * @author filipe
  */
-public class ArvoreVermelhaPreta extends Arvore{
-    
+public class PassoAnimcaoArvore {
+
 }

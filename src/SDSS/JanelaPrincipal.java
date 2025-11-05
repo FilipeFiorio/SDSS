@@ -5,7 +5,7 @@ import SDSS.linear.Fila;
 import SDSS.linear.Lista;
 import SDSS.linear.Pilha;
 import SDSS.naoLinear.ArvoreAVL;
-import SDSS.naoLinear.ArvoreBinaria;
+import SDSS.naoLinear.ArvoreBinariaBusca;
 import SDSS.naoLinear.ArvoreVermelhaPreta;
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
 import br.com.davidbuzatto.jsge.geom.Rectangle;
@@ -115,7 +115,7 @@ public class JanelaPrincipal extends EngineFrame {
                 }
             } else if (!mostrarPainelLinear) {
                 if (mouseIn(botaoArvoreBinaria)) {
-                    abrirJanela(new ArvoreBinaria());
+                    abrirJanela(new ArvoreBinariaBusca());
                 } else if (mouseIn(botaoArvoreAVL)) {
                     abrirJanela(new ArvoreAVL());
                 } else if (mouseIn(botaoArvoreRN)) {
