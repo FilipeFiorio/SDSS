@@ -3,7 +3,6 @@ package SDSS.naoLinear;
 import br.com.davidbuzatto.jsge.core.Camera2D;
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
 import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.*;
-import br.com.davidbuzatto.jsge.core.utils.ColorUtils;
 import br.com.davidbuzatto.jsge.geom.Rectangle;
 import br.com.davidbuzatto.jsge.geom.RoundRectangle;
 import br.com.davidbuzatto.jsge.imgui.GuiButton;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Janela base para as visualizações de árvore.
- * Mantive a estrutura da sua versão e adicionei hooks para desenhar árvores.
+ * Janela base para as visualizações de árvore. Mantive a estrutura da sua
+ * versão e adicionei hooks para desenhar árvores.
  */
 public class JanelaArvore extends EngineFrame {
 
@@ -34,8 +33,10 @@ public class JanelaArvore extends EngineFrame {
     private List<GuiButton> listaBotoes;
 
     private boolean mostrarMenu;
-    
+
     private Arvore arvore;
+    private String t1;
+    private String t2;
 
     private final Color corBackground = new Color(230, 230, 255); // fundo claro
     private final Color corBotao = new Color(42, 42, 52);
@@ -51,10 +52,11 @@ public class JanelaArvore extends EngineFrame {
                 false, // full screen
                 false, // undecorated
                 false, // always on top
-                false  // invisible background
+                false // invisible background
         );
-        
+
         this.arvore = arvore;
+
     }
 
     @Override
@@ -62,16 +64,18 @@ public class JanelaArvore extends EngineFrame {
 
         useAsDependencyForIMGUI();
 
+        
+        //Criação dos botoes e da parte interativa do simulador
         botaoHambHitBox = new RoundRectangle(getScreenWidth() - 50, 20, 25, 28, 1);
         bordaMenu = new RoundRectangle(getScreenWidth() - 300, 70, 280, 160, 10);
         mostrarMenu = false;
 
-        botaoPut = new GuiButton(getScreenWidth() - 290, 80, 125, 40, "ADD");
-        botaoDelete = new GuiButton(getScreenWidth() - 155, 80, 125, 40, "REMOVE");
+        botaoPut = new GuiButton(getScreenWidth() - 290, 80, 125, 40, "PUT");
+        botaoDelete = new GuiButton(getScreenWidth() - 155, 80, 125, 40, "DELETE");
         botaoLimpar = new GuiButton(getScreenWidth() - 290, 130, 125, 40, "LIMPAR");
         botaoCriarAleatorio = new GuiButton(getScreenWidth() - 155, 130, 125, 40, "CRIAR ALEATÓRIO");
-        botaoTransformacao1 = new GuiButton(getScreenWidth() - 290, 180, 125, 40, "t1");
-        botaoTransformacao2 = new GuiButton(getScreenWidth() - 155, 180, 125, 40, "t2");
+        botaoTransformacao1 = new GuiButton(getScreenWidth() - 290, 180, 125, 40, null);
+        botaoTransformacao2 = new GuiButton(getScreenWidth() - 155, 180, 125, 40, null);
 
         listaBotoes = new ArrayList<>();
         listaBotoes.add(botaoPut);
@@ -82,18 +86,28 @@ public class JanelaArvore extends EngineFrame {
         listaBotoes.add(botaoTransformacao2);
 
         foco = new FocoCamera(new Vector2(getScreenWidth() / 2, getScreenHeight() / 2), new Vector2(10, 10), 500);
-        camera = new Camera2D(
-                new Vector2(foco.pos.x, foco.pos.y),
-                new Vector2(0,0),
-                0,
-                1
-        );
-
+        camera = new Camera2D(new Vector2(foco.pos.x, foco.pos.y), new Vector2(0, 0), 0, 1);
         bordaCamera = new Rectangle(0, 0, getScreenWidth(), getScreenHeight());
+
     }
 
     @Override
     public void update(double delta) {
+
+        // Acho que da pra melhorar, mas funciona
+        // Modo de trocar o texto dos botoes dependendo da Arvore
+        if (t1 == null || t2 == null) {
+            if (arvore instanceof ArvoreBinariaBusca) {
+               botaoTransformacao1.setText("Para AVL");
+               botaoTransformacao2.setText("Para V e P");
+            } else if (arvore instanceof ArvoreAVL) {
+                botaoTransformacao1.setText("Para ABB");
+                botaoTransformacao2.setText("Para V e P");
+            } else if (arvore instanceof ArvoreVermelhaPreta) {
+                botaoTransformacao1.setText("Para ABB");
+                botaoTransformacao2.setText("Para AVL");
+            }
+        }
 
         for (GuiButton b : listaBotoes) {
             b.update(delta);
@@ -123,7 +137,9 @@ public class JanelaArvore extends EngineFrame {
             camera.zoom += 0.01;
         } else if (isKeyDown(KEY_KP_SUBTRACT) || isKeyDown(KEY_MINUS)) {
             camera.zoom -= 0.01;
-            if (camera.zoom < 0.1) camera.zoom = 0.1;
+            if (camera.zoom < 0.1) {
+                camera.zoom = 0.1;
+            }
         }
 
         if (isKeyPressed(KEY_R)) {
@@ -132,19 +148,19 @@ public class JanelaArvore extends EngineFrame {
             foco.pos.x = getScreenWidth() / 2;
             foco.pos.y = getScreenHeight() / 2;
         }
-        
-        if(botaoPut.isMousePressed()) {
+
+        if (botaoPut.isMousePressed()) {
             arvore.put();
-        } else if(botaoDelete.isMousePressed()) {
+        } else if (botaoDelete.isMousePressed()) {
             arvore.delete();
-        } else if(botaoLimpar.isMousePressed()) {
+        } else if (botaoLimpar.isMousePressed()) {
             arvore.limpar();
-        } else if(botaoCriarAleatorio.isMousePressed()) {
-            arvore.criarAleatorio();
-        } else if(botaoTransformacao1.isMousePressed()) {
-            transformacao1();
-        } else if(botaoTransformacao2.isMousePressed()) {
-            transformacao2();
+        } else if (botaoCriarAleatorio.isMousePressed()) {
+            arvore.criarAletorio();
+        } else if (botaoTransformacao1.isMousePressed()) {
+            arvore.transformacao1(arvore.listaNode);
+        } else if (botaoTransformacao2.isMousePressed()) {
+            arvore.transformacao2(arvore.listaNode);
         }
 
         atualizarCamera();
@@ -152,6 +168,8 @@ public class JanelaArvore extends EngineFrame {
 
     @Override
     public void draw() {
+
+        System.out.println(arvore.getClass());
 
         clearBackground(corBackground);
 
@@ -161,11 +179,9 @@ public class JanelaArvore extends EngineFrame {
         beginMode2D(camera);
 
         // área desenhável (pode ser usada pela ArvoreBinaria)
-        bordaCamera.fill(this, ColorUtils.colorAlpha(LIGHTGRAY, 0.05f));
+        bordaCamera.fill(this, GREEN);
 
         endMode2D();
-
-        drawInfo();
 
         if (mouseIn(botaoHambHitBox)) {
             for (int i = 1; i <= 3; i++) {
@@ -184,35 +200,13 @@ public class JanelaArvore extends EngineFrame {
                 b.draw();
             }
         }
-
-    }
-
-    protected void drawInfo() {
-        fillRoundRectangle(5, 5, 340, 200, 10, ColorUtils.colorAlpha(RAYWHITE, 0.5));
-        drawRoundRectangle(5, 5, 340, 200, 10, BLACK);
-
-        drawText("<R> to reset", 210, 20, BLACK);
-
-        int y = 40;
-        int step = 18;
-        Vector2 playerScreen = camera.getWorldToScreen(foco.pos.x, foco.pos.y);
-        drawText("Player: ", 20, y, BLACK);
-        drawText(String.format(" World: (%.2f, %.2f)", foco.pos.x, foco.pos.y), 30, y += step, BLACK);
-        drawText(String.format("Screen: (%.2f, %.2f)", playerScreen.x, playerScreen.y), 30, y += step, BLACK);
-
-        y += step;
-        drawText("Camera: ", 20, y += step, BLACK);
-        drawText(String.format("  Target: (%.2f, %.2f)", camera.target.x, camera.target.y), 30, y += step, BLACK);
-        drawText(String.format("  Offset: (%.2f, %.2f)", camera.offset.x, camera.offset.y), 30, y += step, BLACK);
-        drawText(String.format("Rotation: %.2f (DEL/PG-Down)", camera.rotation), 30, y += step, BLACK);
-        drawText(String.format("    Zoom: %.2f (+/-)", camera.zoom), 30, y += step, BLACK);
     }
 
     protected void atualizarCamera() {
         camera.target.x = foco.pos.x;
         camera.target.y = foco.pos.y;
-        camera.offset.x = 0;
-        camera.offset.y = 0;
+        camera.offset.x = getScreenWidth() / 2;
+        camera.offset.y = getScreenHeight() / 2;
     }
 
     protected boolean mouseIn(RoundRectangle r) {
@@ -222,5 +216,8 @@ public class JanelaArvore extends EngineFrame {
                 && mouseY >= r.y && mouseY <= r.height + r.y;
     }
     
+    public static void main(String[] args) {
+        new JanelaArvore("teste", new ArvoreBinariaBusca());
+    }
 
 }
