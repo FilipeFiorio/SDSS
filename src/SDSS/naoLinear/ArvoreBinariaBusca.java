@@ -24,7 +24,9 @@ public class ArvoreBinariaBusca extends Arvore {
     }
     
     
-    //Precisa melhorar o posicionamento dos nos no eixo X, esta ficando com um posicionamento estranho, tem sobreposicao de nos
+    /*Precisa melhorar o posicionamento dos nos no eixo X, 
+    esta ficando com um posicionamento estranho, tem sobreposicao de nos
+    */
     private Node inserir(Node atual, Node pai, int valor, double x, double y, double desvioX) {
 
         if (atual == null) {

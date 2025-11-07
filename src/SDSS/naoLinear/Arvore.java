@@ -82,10 +82,9 @@ public abstract class Arvore {
     /*TODO: 
         arrumar logo estruturas lineares na tela inicial,
         Implementaçao da arvore binaria de Busca
-        Implementaçao da arvore AVL
         Implementaçao da arvore vermelha e preta
         criar uma animacao para os nos
-        desenhar a arvore na janela arvore 1/3
+        desenhar a arvore na janela arvore 2/3
     */
     
     public static void main(String[] args) {
