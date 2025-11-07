@@ -6,15 +6,12 @@ import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.*;
 import br.com.davidbuzatto.jsge.geom.Rectangle;
 import br.com.davidbuzatto.jsge.geom.RoundRectangle;
 import br.com.davidbuzatto.jsge.imgui.GuiButton;
+import br.com.davidbuzatto.jsge.imgui.GuiInputDialog;
 import br.com.davidbuzatto.jsge.math.Vector2;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Janela base para as visualizações de árvore. Mantive a estrutura da sua
- * versão e adicionei hooks para desenhar árvores.
- */
 public class JanelaArvore extends EngineFrame {
 
     private Camera2D camera;
@@ -30,9 +27,12 @@ public class JanelaArvore extends EngineFrame {
     private GuiButton botaoTransformacao1;
     private GuiButton botaoTransformacao2;
 
+    private GuiInputDialog inputValores;
+
     private List<GuiButton> listaBotoes;
 
     private boolean mostrarMenu;
+    private boolean exibirInput;
 
     private Arvore arvore;
     private String t1;
@@ -43,8 +43,8 @@ public class JanelaArvore extends EngineFrame {
 
     public JanelaArvore(String title, Arvore arvore) {
         super(
-                854, // largura
-                480, // altura
+                1280, // largura
+                720, // altura
                 title, // título
                 60, // target FPS
                 true, // antialiasing
@@ -64,11 +64,11 @@ public class JanelaArvore extends EngineFrame {
 
         useAsDependencyForIMGUI();
 
-        
         //Criação dos botoes e da parte interativa do simulador
         botaoHambHitBox = new RoundRectangle(getScreenWidth() - 50, 20, 25, 28, 1);
         bordaMenu = new RoundRectangle(getScreenWidth() - 300, 70, 280, 160, 10);
         mostrarMenu = false;
+        exibirInput = false;
 
         botaoPut = new GuiButton(getScreenWidth() - 290, 80, 125, 40, "PUT");
         botaoDelete = new GuiButton(getScreenWidth() - 155, 80, 125, 40, "DELETE");
@@ -85,6 +85,9 @@ public class JanelaArvore extends EngineFrame {
         listaBotoes.add(botaoTransformacao1);
         listaBotoes.add(botaoTransformacao2);
 
+        inputValores = new GuiInputDialog("Input", "Entre com um Inteiro", true);
+
+        // Criacao de componentes da camera
         foco = new FocoCamera(new Vector2(getScreenWidth() / 2, getScreenHeight() / 2), new Vector2(10, 10), 500);
         camera = new Camera2D(new Vector2(foco.pos.x, foco.pos.y), new Vector2(0, 0), 0, 1);
         bordaCamera = new Rectangle(0, 0, getScreenWidth(), getScreenHeight());
@@ -98,8 +101,8 @@ public class JanelaArvore extends EngineFrame {
         // Modo de trocar o texto dos botoes dependendo da Arvore
         if (t1 == null || t2 == null) {
             if (arvore instanceof ArvoreBinariaBusca) {
-               botaoTransformacao1.setText("Para AVL");
-               botaoTransformacao2.setText("Para V e P");
+                botaoTransformacao1.setText("Para AVL");
+                botaoTransformacao2.setText("Para V e P");
             } else if (arvore instanceof ArvoreAVL) {
                 botaoTransformacao1.setText("Para ABB");
                 botaoTransformacao2.setText("Para V e P");
@@ -125,31 +128,29 @@ public class JanelaArvore extends EngineFrame {
             }
         }
 
-        foco.update(delta, bordaCamera, this);
+        if (!exibirInput) {
 
-        if (isKeyDown(KEY_DELETE)) {
-            camera.rotation--;
-        } else if (isKeyDown(KEY_PAGE_DOWN)) {
-            camera.rotation++;
-        }
+            foco.update(delta, bordaCamera, this);
 
-        if (isKeyDown(KEY_KP_ADD) || isKeyDown(KEY_EQUAL)) {
-            camera.zoom += 0.01;
-        } else if (isKeyDown(KEY_KP_SUBTRACT) || isKeyDown(KEY_MINUS)) {
-            camera.zoom -= 0.01;
-            if (camera.zoom < 0.1) {
-                camera.zoom = 0.1;
+            if (isKeyDown(KEY_KP_ADD) || isKeyDown(KEY_EQUAL)) {
+                camera.zoom += 0.01;
+            } else if (isKeyDown(KEY_KP_SUBTRACT) || isKeyDown(KEY_MINUS)) {
+                camera.zoom -= 0.01;
+                if (camera.zoom < 0.1) {
+                    camera.zoom = 0.1;
+                }
+            }
+
+            if (isKeyPressed(KEY_R)) {
+                camera.rotation = 0;
+                camera.zoom = 1;
+                foco.pos.x = getScreenWidth() / 2;
+                foco.pos.y = getScreenHeight() / 2;
             }
         }
 
-        if (isKeyPressed(KEY_R)) {
-            camera.rotation = 0;
-            camera.zoom = 1;
-            foco.pos.x = getScreenWidth() / 2;
-            foco.pos.y = getScreenHeight() / 2;
-        }
-
         if (botaoPut.isMousePressed()) {
+            inputValores.show();
             arvore.put();
         } else if (botaoDelete.isMousePressed()) {
             arvore.delete();
@@ -163,13 +164,28 @@ public class JanelaArvore extends EngineFrame {
             arvore.transformacao2(arvore.listaNode);
         }
 
+//        if (inputValores.isOkButtonPressed() || inputValores.isEnterKeyPressed()) {
+//            inputValores.hide();
+//            if (checarInteiro(inputValores.getValue())) {
+//                if (adicionarValor) {
+//                    addIndex(Integer.parseInt(inputValores.getValue()));
+//                } else {
+//                    removeIdex(Integer.parseInt(inputValores.getValue()));
+//                }
+//            }
+//
+//            adicionarValor = false;
+//        }
+//
+//        if (entradaIndex.isCancelButtonPressed() || entradaIndex.isCloseButtonPressed()) {
+//            entradaIndex.hide();
+//        }
+
         atualizarCamera();
     }
 
     @Override
     public void draw() {
-
-        System.out.println(arvore.getClass());
 
         clearBackground(corBackground);
 
@@ -177,11 +193,10 @@ public class JanelaArvore extends EngineFrame {
         setFontStyle(FONT_BOLD);
 
         beginMode2D(camera);
-
-        // área desenhável (pode ser usada pela ArvoreBinaria)
-        bordaCamera.fill(this, GREEN);
-
+        arvore.drawArvore(this);
         endMode2D();
+        
+        drawText("Tamanho: " + String.valueOf(arvore.getAlturaArvore(arvore.getRaiz())), 30, 30, 20, BLACK);
 
         if (mouseIn(botaoHambHitBox)) {
             for (int i = 1; i <= 3; i++) {
@@ -215,7 +230,7 @@ public class JanelaArvore extends EngineFrame {
         return mouseX >= r.x && mouseX <= r.width + r.x
                 && mouseY >= r.y && mouseY <= r.height + r.y;
     }
-    
+
     public static void main(String[] args) {
         new JanelaArvore("teste", new ArvoreBinariaBusca());
     }
