@@ -1,6 +1,7 @@
 package SDSS.naoLinear;
 
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
+import java.util.ArrayList;
 import java.util.List;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
@@ -16,10 +17,13 @@ public class ArvoreAVL extends Arvore {
     }
 
     @Override
-    public void put() {
-        int valor = (int)(Math.random() * 100);
+    public void put(int valor) {
         raiz = inserir(raiz, valor);
-        atualizarPosicoes(raiz, 640, 60, distanciaX * 0.6);
+        
+        List<Node> listaTemp = new ArrayList<>(listaNode);
+        listaNode = listaTemp;
+        
+        atualizarPosicoes(raiz, 640, 60, distanciaX);
     }
 
     private Node inserir(Node atual, int valor) {
@@ -64,14 +68,11 @@ public class ArvoreAVL extends Arvore {
         return atual;
     }
 
-    private int altura(Node n) {
-        if (n == null) return 0;
-        return 1 + Math.max(altura(n.getFilhoEsquerda()), altura(n.getFilhoDireita()));
-    }
+
 
     private int getBalanceamento(Node n) {
         if (n == null) return 0;
-        return altura(n.getFilhoEsquerda()) - altura(n.getFilhoDireita());
+        return getAlturaArvore(n.getFilhoEsquerda()) - getAlturaArvore(n.getFilhoDireita());
     }
 
     // Rotação EE (direita)
@@ -80,6 +81,7 @@ public class ArvoreAVL extends Arvore {
         Node temp = b.getFilhoDireita();
         b.setFilhoDireita(a);
         a.setFilhoEsquerda(temp);
+        atualizarPosicoes(raiz, 640, 60, distanciaX);
         return b;
     }
 
@@ -89,6 +91,7 @@ public class ArvoreAVL extends Arvore {
         Node temp = b.getFilhoEsquerda();
         b.setFilhoEsquerda(a);
         a.setFilhoDireita(temp);
+        atualizarPosicoes(raiz, 640, 60, distanciaX);
         return b;
     }
 
@@ -100,11 +103,11 @@ public class ArvoreAVL extends Arvore {
         atual.setCentroY(y);
 
         if (atual.getFilhoEsquerda() != null) {
-            atualizarPosicoes(atual.getFilhoEsquerda(), x - desvioX, y + distanciaY, desvioX / 1.8);
+            atualizarPosicoes(atual.getFilhoEsquerda(), x - desvioX, y + distanciaY, desvioX / 1.75);
         }
 
         if (atual.getFilhoDireita() != null) {
-            atualizarPosicoes(atual.getFilhoDireita(), x + desvioX, y + distanciaY, desvioX / 1.8);
+            atualizarPosicoes(atual.getFilhoDireita(), x + desvioX, y + distanciaY, desvioX / 1.75);
         }
     }
 
@@ -115,12 +118,12 @@ public class ArvoreAVL extends Arvore {
 
     @Override
     public void transformacao1(List<Node> listaNode) {
-        transformacao(new JanelaArvore("Árvore Binária de Busca", new ArvoreBinariaBusca(listaNode)));
+        transformacao(new JanelaArvore("Árvore Binária de Busca", new ArvoreBinariaBusca(new ArrayList<>(this.listaNode))));
     }
 
     @Override
     public void transformacao2(List<Node> listaNode) {
-        transformacao(new JanelaArvore("Árvore Vermelha e Preta", new ArvoreVermelhaPreta(listaNode)));
+        transformacao(new JanelaArvore("Árvore Vermelha e Preta", new ArvoreVermelhaPreta(new ArrayList<>(this.listaNode))));
     }
 
     private void transformacao(EngineFrame e) {

@@ -1,6 +1,7 @@
 package SDSS.naoLinear;
 
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
+import java.util.ArrayList;
 import java.util.List;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
@@ -17,10 +18,8 @@ public class ArvoreBinariaBusca extends Arvore {
     }
 
     @Override
-    public void put() {
-        // gerando um valor aleatorio so para teste, dps lembrar de mudar!!!
-        int valor = (int)(Math.random() * 100);
-        raiz = inserir(raiz, null, valor, 640, 60, distanciaX );
+    public void put(int valor) {
+        raiz = inserir(raiz, null, valor, 640, 60, distanciaX);
     }
     
     
@@ -57,7 +56,7 @@ public class ArvoreBinariaBusca extends Arvore {
                 valor,
                 x - desvioX,
                 y + distanciaY,
-                desvioX / 2
+                desvioX / 1.75
             ));
         } else if(valor > atual.getValor()) {
             atual.setFilhoDireita(inserir(
@@ -66,7 +65,7 @@ public class ArvoreBinariaBusca extends Arvore {
                 valor,
                 x + desvioX,
                 y + distanciaY,
-                desvioX / 2
+                desvioX / 1.75
             ));
         }
         
@@ -78,12 +77,12 @@ public class ArvoreBinariaBusca extends Arvore {
 
     @Override
     public void transformacao1(List<Node> listaNode) {
-        transformacao(new JanelaArvore("Árvore AVL", new ArvoreAVL(listaNode)));
+        transformacao(new JanelaArvore("Árvore AVL", new ArvoreAVL(new ArrayList<>(this.listaNode))));
     }
 
     @Override
     public void transformacao2(List<Node> listaNode) {
-        transformacao(new JanelaArvore("Árvore Vermelha e Preta", new ArvoreVermelhaPreta(listaNode)));
+        transformacao(new JanelaArvore("Árvore Vermelha e Preta", new ArvoreVermelhaPreta(new ArrayList<>(this.listaNode))));
     }
 
     private void transformacao(EngineFrame e) {

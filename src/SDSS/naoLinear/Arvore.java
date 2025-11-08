@@ -16,24 +16,26 @@ public abstract class Arvore {
     protected final Image logo = loadImage("resources/images/logoSDSS.png");
     protected Node raiz;
     protected List<Node> listaNode = new ArrayList<>();
-    
+
     protected double distanciaX = 320;
     protected final double distanciaY = 80;
-    
-    
+
     public Arvore() {
-        
+
     }
-    
+
     public Arvore(List<Node> listaNode) {
         this.listaNode = listaNode;
     }
 
-    public abstract void put();
+    public abstract void put(int valor);
+
     public abstract void delete();
-    public abstract void transformacao1(List<Node> listaNode); 
+
+    public abstract void transformacao1(List<Node> listaNode);
+
     public abstract void transformacao2(List<Node> listaNode);
-    
+
     public void limpar() {
         listaNode.clear();
         raiz = null;
@@ -50,43 +52,40 @@ public abstract class Arvore {
         }
 
     }
-    
+
     public void drawArvore(EngineFrame e) {
-        
-        if(listaNode.isEmpty()) {
-            e.drawText("Árvore Vazia!", (e.getScreenWidth() - e.measureText("Árvore Vazia!", 30))/ 2, e.getScreenHeight() / 2, 30, EngineFrame.GRAY);
+
+        if (listaNode.isEmpty()) {
+            e.drawText("Árvore Vazia!", (e.getScreenWidth() - e.measureText("Árvore Vazia!", 30)) / 2, e.getScreenHeight() / 2, 30, EngineFrame.GRAY);
             return;
         }
-        
-        for(Node n : listaNode) {
+
+        for (Node n : listaNode) {
             n.drawNode(e);
         }
-        
+
     }
-    
+
     public int getAlturaArvore(Node node) {
         //tem que verificar se é nulo, pq quebra
-        if(node == null) {
+        if (node == null) {
             return 0;
         }
         return 1 + Math.max(getAlturaArvore(node.getFilhoDireita()), getAlturaArvore(node.getFilhoEsquerda()));
     }
-    
+
     public Node getRaiz() {
         return raiz;
     }
-    
+
     //public abstract void putValor(int valor);
-        
-    
     /*TODO: 
         arrumar logo estruturas lineares na tela inicial,
         Implementaçao da arvore binaria de Busca
         Implementaçao da arvore vermelha e preta
         criar uma animacao para os nos
         desenhar a arvore na janela arvore 2/3
-    */
-    
+     */
     public static void main(String[] args) {
 
         ArvoreBinariaBusca arvore = new ArvoreBinariaBusca();

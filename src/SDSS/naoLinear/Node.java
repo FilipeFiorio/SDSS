@@ -72,6 +72,14 @@ public class Node {
     public void setFilhoDireita(Node filhoDireita) {
         this.filhoDireita = filhoDireita;
     }
+    
+    public void setCor(Color corLinha) {
+        this.corLinha = corLinha;
+    }
+    
+    public Color getCor() {
+        return corLinha;
+    }
 
     public void drawNode(EngineFrame e) {
 
@@ -98,10 +106,10 @@ public class Node {
         e.fillCircle(centroX, centroY, 20, EngineFrame.WHITE);
         e.drawCircle(centroX, centroY, 20, EngineFrame.BLACK);
         e.drawText(
-                String.valueOf(valor), 
+                String.valueOf(valor),
                 (centroX - (e.measureText(String.valueOf(valor), 18) / 2)),
-                centroY - 3, 
-                18, 
+                centroY - 3,
+                18,
                 EngineFrame.BLACK);
     }
 

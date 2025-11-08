@@ -119,6 +119,8 @@ public class JanelaArvore extends EngineFrame {
             b.setEnabled(mostrarMenu);
             b.setVisible(mostrarMenu);
         }
+        
+        inputValores.update(delta);
 
         if (mouseIn(botaoHambHitBox)) {
             if (isMouseButtonPressed(MOUSE_BUTTON_LEFT) && mostrarMenu == false) {
@@ -151,7 +153,7 @@ public class JanelaArvore extends EngineFrame {
 
         if (botaoPut.isMousePressed()) {
             inputValores.show();
-            arvore.put();
+            exibirInput = true;
         } else if (botaoDelete.isMousePressed()) {
             arvore.delete();
         } else if (botaoLimpar.isMousePressed()) {
@@ -164,22 +166,17 @@ public class JanelaArvore extends EngineFrame {
             arvore.transformacao2(arvore.listaNode);
         }
 
-//        if (inputValores.isOkButtonPressed() || inputValores.isEnterKeyPressed()) {
-//            inputValores.hide();
-//            if (checarInteiro(inputValores.getValue())) {
-//                if (adicionarValor) {
-//                    addIndex(Integer.parseInt(inputValores.getValue()));
-//                } else {
-//                    removeIdex(Integer.parseInt(inputValores.getValue()));
-//                }
-//            }
-//
-//            adicionarValor = false;
-//        }
-//
-//        if (entradaIndex.isCancelButtonPressed() || entradaIndex.isCloseButtonPressed()) {
-//            entradaIndex.hide();
-//        }
+        if (inputValores.isOkButtonPressed() || inputValores.isEnterKeyPressed()) {
+            inputValores.hide();
+            exibirInput = false;
+            if (checarInteiro(inputValores.getValue())) {
+                arvore.put(Integer.parseInt(inputValores.getValue()));
+            }
+
+        } else if (inputValores.isCancelButtonPressed() || inputValores.isCloseButtonPressed()) {
+            inputValores.hide();
+            exibirInput = false;
+        }
 
         atualizarCamera();
     }
@@ -195,6 +192,8 @@ public class JanelaArvore extends EngineFrame {
         beginMode2D(camera);
         arvore.drawArvore(this);
         endMode2D();
+        
+        inputValores.draw();
         
         drawText("Tamanho: " + String.valueOf(arvore.getAlturaArvore(arvore.getRaiz())), 30, 30, 20, BLACK);
 
@@ -229,6 +228,15 @@ public class JanelaArvore extends EngineFrame {
         double mouseY = getMouseY();
         return mouseX >= r.x && mouseX <= r.width + r.x
                 && mouseY >= r.y && mouseY <= r.height + r.y;
+    }
+    
+        private boolean checarInteiro(String str) {
+        try {
+            Integer.valueOf(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public static void main(String[] args) {
