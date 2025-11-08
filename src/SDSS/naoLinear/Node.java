@@ -83,12 +83,16 @@ public class Node {
 
     public void drawNode(EngineFrame e) {
 
+        /* +20 nos nós pais para a linha comecar na borda inferior
+            - 20 nos nós filhos para a linha terminar na borda superior
+            temporario, achar um jeito melhor para desenhar dps
+        */
         if (filhoEsquerda != null) {
             e.drawLine(
                     centroX,
-                    centroY,
+                    centroY + 20,
                     filhoEsquerda.centroX,
-                    filhoEsquerda.centroY,
+                    filhoEsquerda.centroY - 20,
                     filhoEsquerda.corLinha
             );
         }
@@ -96,9 +100,9 @@ public class Node {
         if (filhoDireita != null) {
             e.drawLine(
                     centroX,
-                    centroY,
+                    centroY + 20,
                     filhoDireita.centroX,
-                    filhoDireita.centroY,
+                    filhoDireita.centroY - 20,
                     filhoDireita.corLinha
             );
         }

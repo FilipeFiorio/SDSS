@@ -18,7 +18,7 @@ public abstract class Arvore {
     protected List<Node> listaNode = new ArrayList<>();
 
     protected double distanciaX = 320;
-    protected final double distanciaY = 80;
+    protected final double distanciaY = 160;
 
     public Arvore() {
 
@@ -81,10 +81,9 @@ public abstract class Arvore {
     //public abstract void putValor(int valor);
     /*TODO: 
         arrumar logo estruturas lineares na tela inicial,
-        Implementaçao da arvore binaria de Busca
-        Implementaçao da arvore vermelha e preta
         criar uma animacao para os nos
-        desenhar a arvore na janela arvore 2/3
+        achar um jeito melhor de desenhar as linhas
+        implementar delete, transf1 e transf2
      */
     public static void main(String[] args) {
 
