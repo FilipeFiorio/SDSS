@@ -5,6 +5,9 @@
         <group>
             <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/ArvoreAVL.java</file>
             <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/Arvore.java</file>
+            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/JanelaArvore.java</file>
+            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/ArvoreBinariaBusca.java</file>
+            <file>file:/home/filipe/Documentos/Estrutura-de-Dados/SDSS/src/SDSS/naoLinear/ArvoreVermelhaPreta.java</file>
         </group>
     </open-files>
 </project-private>

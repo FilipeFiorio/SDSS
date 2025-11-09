@@ -33,6 +33,7 @@ public class JanelaArvore extends EngineFrame {
 
     private boolean mostrarMenu;
     private boolean exibirInput;
+    private boolean entradaValores;
 
     private Arvore arvore;
     private String t1;
@@ -69,6 +70,7 @@ public class JanelaArvore extends EngineFrame {
         bordaMenu = new RoundRectangle(getScreenWidth() - 300, 70, 280, 160, 10);
         mostrarMenu = false;
         exibirInput = false;
+        entradaValores = false;
 
         botaoPut = new GuiButton(getScreenWidth() - 290, 80, 125, 40, "PUT");
         botaoDelete = new GuiButton(getScreenWidth() - 155, 80, 125, 40, "DELETE");
@@ -154,12 +156,15 @@ public class JanelaArvore extends EngineFrame {
         if (botaoPut.isMousePressed()) {
             inputValores.show();
             exibirInput = true;
+            entradaValores = true;
         } else if (botaoDelete.isMousePressed()) {
-            arvore.delete();
+            inputValores.show();
+            exibirInput = true;
+            entradaValores = false;
         } else if (botaoLimpar.isMousePressed()) {
             arvore.limpar();
         } else if (botaoCriarAleatorio.isMousePressed()) {
-            arvore.criarAletorio();
+            arvore.criarAleatorio();
         } else if (botaoTransformacao1.isMousePressed()) {
             arvore.transformacao1(arvore.listaNode);
         } else if (botaoTransformacao2.isMousePressed()) {
@@ -169,8 +174,10 @@ public class JanelaArvore extends EngineFrame {
         if (inputValores.isOkButtonPressed() || inputValores.isEnterKeyPressed()) {
             inputValores.hide();
             exibirInput = false;
-            if (checarInteiro(inputValores.getValue())) {
+            if (checarInteiro(inputValores.getValue()) && entradaValores) {
                 arvore.put(Integer.parseInt(inputValores.getValue()));
+            } else if(checarInteiro(inputValores.getValue()) && !entradaValores) {
+                arvore.delete(Integer.parseInt(inputValores.getValue()));
             }
 
         } else if (inputValores.isCancelButtonPressed() || inputValores.isCloseButtonPressed()) {

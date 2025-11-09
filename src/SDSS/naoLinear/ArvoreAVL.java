@@ -7,7 +7,8 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class ArvoreAVL extends Arvore {
 
-    public ArvoreAVL() {}
+    public ArvoreAVL() {
+    }
 
     public ArvoreAVL(List<Node> listaNode) {
         this.listaNode = listaNode;
@@ -19,10 +20,10 @@ public class ArvoreAVL extends Arvore {
     @Override
     public void put(int valor) {
         raiz = inserir(raiz, valor);
-        
+
         List<Node> listaTemp = new ArrayList<>(listaNode);
         listaNode = listaTemp;
-        
+
         atualizarPosicoes(raiz, 640, 60, distanciaX);
     }
 
@@ -38,29 +39,29 @@ public class ArvoreAVL extends Arvore {
         } else if (valor > atual.getValor()) {
             atual.setFilhoDireita(inserir(atual.getFilhoDireita(), valor));
         } else {
-            return atual; // evita duplicados
+            return atual;
         }
 
-        int fb = getBalanceamento(atual);
+        int balanceamento = getBalanceamento(atual);
 
         // EE
-        if (fb > 1 && valor < atual.getFilhoEsquerda().getValor()) {
+        if (balanceamento > 1 && valor < atual.getFilhoEsquerda().getValor()) {
             return rotacaoDireita(atual);
         }
 
         // DD
-        if (fb < -1 && valor > atual.getFilhoDireita().getValor()) {
+        if (balanceamento < -1 && valor > atual.getFilhoDireita().getValor()) {
             return rotacaoEsquerda(atual);
         }
 
         // ED
-        if (fb > 1 && valor > atual.getFilhoEsquerda().getValor()) {
+        if (balanceamento > 1 && valor > atual.getFilhoEsquerda().getValor()) {
             atual.setFilhoEsquerda(rotacaoEsquerda(atual.getFilhoEsquerda()));
             return rotacaoDireita(atual);
         }
 
         // DE
-        if (fb < -1 && valor < atual.getFilhoDireita().getValor()) {
+        if (balanceamento < -1 && valor < atual.getFilhoDireita().getValor()) {
             atual.setFilhoDireita(rotacaoDireita(atual.getFilhoDireita()));
             return rotacaoEsquerda(atual);
         }
@@ -68,10 +69,10 @@ public class ArvoreAVL extends Arvore {
         return atual;
     }
 
-
-
     private int getBalanceamento(Node n) {
-        if (n == null) return 0;
+        if (n == null) {
+            return 0;
+        }
         return getAlturaArvore(n.getFilhoEsquerda()) - getAlturaArvore(n.getFilhoDireita());
     }
 
@@ -95,35 +96,84 @@ public class ArvoreAVL extends Arvore {
         return b;
     }
 
-    // Atualiza posições visuais
-    private void atualizarPosicoes(Node atual, double x, double y, double desvioX) {
-        if (atual == null) return;
-
-        atual.setCentroX(x);
-        atual.setCentroY(y);
-
-        if (atual.getFilhoEsquerda() != null) {
-            atualizarPosicoes(atual.getFilhoEsquerda(), x - desvioX, y + distanciaY, desvioX / 1.75);
-        }
-
-        if (atual.getFilhoDireita() != null) {
-            atualizarPosicoes(atual.getFilhoDireita(), x + desvioX, y + distanciaY, desvioX / 1.75);
-        }
+    @Override
+    public void delete(int valor) {
+        raiz = remover(raiz, valor);
+        atualizarPosicoes(raiz, 640, 60, distanciaX);
     }
 
-    @Override
-    public void delete() {
-        // deletar depois se precisar
+    private Node remover(Node atual, int valor) {
+        if (atual == null) {
+            return null;
+        }
+
+        if (valor < atual.getValor()) {
+            atual.setFilhoEsquerda(remover(atual.getFilhoEsquerda(), valor));
+        } else if (valor > atual.getValor()) {
+            atual.setFilhoDireita(remover(atual.getFilhoDireita(), valor));
+        } else {
+            listaNode.remove(atual); 
+
+            if (atual.getFilhoEsquerda() == null && atual.getFilhoDireita() == null) {
+                return null;
+            }
+
+            if (atual.getFilhoEsquerda() == null) {
+                return atual.getFilhoDireita();
+            } else if (atual.getFilhoDireita() == null) {
+                return atual.getFilhoEsquerda();
+            }
+
+            // Caso 3: dois filhos → pega o menor da subárvore direita
+            Node sucessor = getMenor(atual.getFilhoDireita());
+            atual.setValor(sucessor.getValor());
+            atual.setFilhoDireita(remover(atual.getFilhoDireita(), sucessor.getValor()));
+        }
+
+        int fb = getBalanceamento(atual);
+
+        // Casos de rotação AVL após remoção
+        // EE
+        if (fb > 1 && getBalanceamento(atual.getFilhoEsquerda()) >= 0) {
+            return rotacaoDireita(atual);
+        }
+
+        // ED
+        if (fb > 1 && getBalanceamento(atual.getFilhoEsquerda()) < 0) {
+            atual.setFilhoEsquerda(rotacaoEsquerda(atual.getFilhoEsquerda()));
+            return rotacaoDireita(atual);
+        }
+
+        // DD
+        if (fb < -1 && getBalanceamento(atual.getFilhoDireita()) <= 0) {
+            return rotacaoEsquerda(atual);
+        }
+
+        // DE
+        if (fb < -1 && getBalanceamento(atual.getFilhoDireita()) > 0) {
+            atual.setFilhoDireita(rotacaoDireita(atual.getFilhoDireita()));
+            return rotacaoEsquerda(atual);
+        }
+
+        return atual;
     }
 
     @Override
     public void transformacao1(List<Node> listaNode) {
-        transformacao(new JanelaArvore("Árvore Binária de Busca", new ArvoreBinariaBusca(new ArrayList<>(this.listaNode))));
+        ArvoreBinariaBusca nova = new ArvoreBinariaBusca();
+        for (Integer v : getValores()) {
+            nova.put(v);
+        }
+        transformacao(new JanelaArvore("Árvore Binária de Busca", nova));
     }
 
-    @Override
+    @Override 
     public void transformacao2(List<Node> listaNode) {
-        transformacao(new JanelaArvore("Árvore Vermelha e Preta", new ArvoreVermelhaPreta(new ArrayList<>(this.listaNode))));
+        ArvoreVermelhaPreta nova = new ArvoreVermelhaPreta();
+        for (Integer v : getValores()) {
+            nova.put(v);
+        }
+        transformacao(new JanelaArvore("Árvore Vermelha e Preta", nova));
     }
 
     private void transformacao(EngineFrame e) {

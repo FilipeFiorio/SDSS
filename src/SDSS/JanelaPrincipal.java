@@ -257,7 +257,6 @@ public class JanelaPrincipal extends EngineFrame {
             
             //Criando Bootao Pilha
             drawImagemEstruturaLinear(xIniBotao, "Pilha");
-            drawSeta(xIniBotao, yIniBotao, false);
             
             //Criando Botao fila
             drawImagemEstruturaLinear(xIniBotao + espacamentoLinear + 10, "Fila");
