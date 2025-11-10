@@ -42,19 +42,21 @@ public abstract class Arvore {
     public abstract void transformacao2(List<Node> listaNode);
 
     /*Limpa arvore, sorteia um numero de vezes multiplica por 10 para virar um inteiro e cast para int
-        e soma 5 para gerar um quantidade boa,
+        e soma 3 para gerar um quantidade boa,
       entra no loop e comeca a sortear os numeros a serem inseridos
      */
     public void criarAleatorio() {
 
-        limpar();
+        //limpar();
 
-        int quantidade = (int) (Math.random() * 10) + 5;
+        int quantidade = (int) (Math.random() * 10) + 3;
 
         for (int i = 0; i < quantidade; i++) {
             int valor = (int) (Math.random() * 100);
             put(valor);
         }
+        
+        atualizarPosicoes(raiz, 640, 40, distanciaX);
 
     }
 
@@ -76,6 +78,7 @@ public abstract class Arvore {
 
     }
 
+    //recursivamente, vai da raiz ate a folha de maior  nivel
     public int getAlturaArvore(Node node) {
         //tem que verificar se é nulo, pq quebra
         if (node == null) {
@@ -86,11 +89,6 @@ public abstract class Arvore {
 
     public Node getRaiz() {
         return raiz;
-    }
-
-    public static void main(String[] args) {
-
-        ArvoreBinariaBusca arvore = new ArvoreBinariaBusca();
     }
 
     //Pega o menor valor da arvore, ou seja, pega o no mais a esquerda
