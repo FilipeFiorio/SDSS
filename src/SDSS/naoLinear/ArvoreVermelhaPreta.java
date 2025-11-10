@@ -44,7 +44,7 @@ public class ArvoreVermelhaPreta extends Arvore {
             return atual;
         }
 
-        corrigirCoresERotacoes(atual);
+        atual = corrigirCoresERotacoes(atual);
 
         return atual;
     }
