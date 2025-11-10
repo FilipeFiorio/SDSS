@@ -121,7 +121,7 @@ public class JanelaArvore extends EngineFrame {
             b.setEnabled(mostrarMenu);
             b.setVisible(mostrarMenu);
         }
-        
+
         inputValores.update(delta);
 
         if (mouseIn(botaoHambHitBox)) {
@@ -176,13 +176,26 @@ public class JanelaArvore extends EngineFrame {
             exibirInput = false;
             if (checarInteiro(inputValores.getValue()) && entradaValores) {
                 arvore.put(Integer.parseInt(inputValores.getValue()));
-            } else if(checarInteiro(inputValores.getValue()) && !entradaValores) {
+            } else if (checarInteiro(inputValores.getValue()) && !entradaValores) {
                 arvore.delete(Integer.parseInt(inputValores.getValue()));
             }
 
         } else if (inputValores.isCancelButtonPressed() || inputValores.isCloseButtonPressed()) {
             inputValores.hide();
             exibirInput = false;
+        }
+
+        //Adaptacao da animacao da estruturas lineares
+        for (int i = 0; i < arvore.getTamAnimacoes(); i++) {
+            PassoAnimacaoArvore p = arvore.animacoes.get(i);
+            p.atualizar(delta);
+            if (p.isFinalizada()) {
+                if (p.getCentroXFim() == 60 && p.getCentroYFim() == 40) {
+                    arvore.listaNode.remove(p.getNode());
+                }
+                arvore.animacoes.remove(i);
+                i--;
+            }
         }
 
         atualizarCamera();
@@ -199,9 +212,9 @@ public class JanelaArvore extends EngineFrame {
         beginMode2D(camera);
         arvore.drawArvore(this);
         endMode2D();
-        
+
         inputValores.draw();
-        
+
         drawText("Tamanho: " + String.valueOf(arvore.getAlturaArvore(arvore.getRaiz())), 30, 30, 20, BLACK);
 
         if (mouseIn(botaoHambHitBox)) {
@@ -236,18 +249,14 @@ public class JanelaArvore extends EngineFrame {
         return mouseX >= r.x && mouseX <= r.width + r.x
                 && mouseY >= r.y && mouseY <= r.height + r.y;
     }
-    
-        private boolean checarInteiro(String str) {
+
+    private boolean checarInteiro(String str) {
         try {
             Integer.valueOf(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    public static void main(String[] args) {
-        new JanelaArvore("teste", new ArvoreBinariaBusca());
     }
 
 }

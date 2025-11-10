@@ -19,6 +19,28 @@ public class ArvoreBinariaBusca extends Arvore {
     @Override
     public void put(int valor) {
         raiz = inserir(raiz, null, valor, 640, 60, distanciaX);
+        atualizarPosicoes(raiz, 640, 60, distanciaX);
+
+        if (!listaNode.isEmpty()) {
+            Node novo = listaNode.get(listaNode.size() - 1);
+            double destinoX = novo.getCentroX();
+            double destinoY = novo.getCentroY();
+
+            // Começa no topo (spawn)
+            double origemX = 640;
+            double origemY = 40;
+
+            novo.setCentroX(origemX);
+            novo.setCentroY(origemY);
+
+            animacoes.add(new PassoAnimacaoArvore(
+                    novo,
+                    origemX, origemY,
+                    destinoX, destinoY,
+                    TEMPO_ANIMACAO
+            ));
+        }
+
     }
 
     /*Precisa melhorar o posicionamento dos nos no eixo X, 
@@ -86,6 +108,7 @@ public class ArvoreBinariaBusca extends Arvore {
         } else if (valor > atual.getValor()) {
             atual.setFilhoDireita(remover(atual.getFilhoDireita(), valor));
         } else {
+            animarRemocao(atual);
             listaNode.remove(atual);
 
             if (atual.getFilhoEsquerda() == null && atual.getFilhoDireita() == null) {

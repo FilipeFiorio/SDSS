@@ -110,7 +110,7 @@ public class Pilha extends EngineFrame {
 
         if (botaoPop.isMousePressed()) {
             pop();
-        }
+       }
 
         if (mostrarAvisoLimite) {
             botaoPush.setEnabled(false);
