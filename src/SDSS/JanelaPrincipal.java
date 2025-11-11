@@ -339,40 +339,6 @@ public class JanelaPrincipal extends EngineFrame {
         );
     }
     
-    private void drawSeta(double xSeta, double ySeta, boolean invertida) {
-        
-        //Inicializando dimensoes
-        double alturaRetangulo = 24;
-        double larguraRetangulo = 5;
-        
-        // inicializando valores para o retangulo
-        double xRetangulo = xSeta + 5;
-        double yRetangulo = ySeta + 20;
-   
-        
-        // inicializando valores para o triangulo;
-        double xV1 = xSeta;
-        double xV3 = xSeta + larguraRetangulo + 5;
-        double xV2 = (xV1 + xV3) / 2;
-        double yV1 = yRetangulo;
-        double yV3 = yV1;
-        double yV2 = ySeta;
-        
-        Rectangle retangulo = new Rectangle(xRetangulo, yRetangulo, larguraRetangulo, alturaRetangulo);
-        Triangle triangulo =  new Triangle(xV1, yV1, xV2, yV2, xV3, yV3);
-        
-        if (invertida) {
-            triangulo.y1  = triangulo.y1 + alturaRetangulo;
-            triangulo.y2 =  triangulo.y2 + alturaRetangulo + 60;
-            triangulo.y3 = triangulo.y3 + alturaRetangulo;
-        }
-        
-        retangulo.fill(this, LIGHTGRAY);
-        triangulo.fill(this, LIGHTGRAY);
-            
-  
-    }
-    
     public static void main(String[] args) {
         new JanelaPrincipal();
     }

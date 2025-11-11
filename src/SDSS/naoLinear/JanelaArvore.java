@@ -6,6 +6,8 @@ import static br.com.davidbuzatto.jsge.core.engine.EngineFrame.*;
 import br.com.davidbuzatto.jsge.geom.Rectangle;
 import br.com.davidbuzatto.jsge.geom.RoundRectangle;
 import br.com.davidbuzatto.jsge.imgui.GuiButton;
+import br.com.davidbuzatto.jsge.imgui.GuiColorPicker;
+import br.com.davidbuzatto.jsge.imgui.GuiComponent;
 import br.com.davidbuzatto.jsge.imgui.GuiInputDialog;
 import br.com.davidbuzatto.jsge.math.Vector2;
 import java.awt.Color;
@@ -92,7 +94,7 @@ public class JanelaArvore extends EngineFrame {
         // Criacao de componentes da camera
         foco = new FocoCamera(new Vector2(getScreenWidth() / 2, getScreenHeight() / 2), new Vector2(10, 10), 500);
         camera = new Camera2D(new Vector2(foco.pos.x, foco.pos.y), new Vector2(0, 0), 0, 1);
-        bordaCamera = new Rectangle(0, 0, getScreenWidth(), getScreenHeight());
+        bordaCamera = new Rectangle(-200, 250, getScreenWidth() + 300, getScreenHeight() + 300);
 
     }
 
@@ -118,12 +120,15 @@ public class JanelaArvore extends EngineFrame {
             b.update(delta);
             b.setTextColor(WHITE);
             b.setBackgroundColor(corBotao);
-            b.setEnabled(mostrarMenu);
+            b.setEnabled(mostrarMenu && !exibirInput);
             b.setVisible(mostrarMenu);
         }
 
         inputValores.update(delta);
-
+        inputValores.setBackgroundColor(corBackground);
+        inputValores.setTitleBarBackgroundColor(corBotao);
+        inputValores.setTitleBarTextColor(WHITE);
+        
         if (mouseIn(botaoHambHitBox)) {
             if (isMouseButtonPressed(MOUSE_BUTTON_LEFT) && mostrarMenu == false) {
                 mostrarMenu = true;
@@ -151,8 +156,9 @@ public class JanelaArvore extends EngineFrame {
                 foco.pos.x = getScreenWidth() / 2;
                 foco.pos.y = getScreenHeight() / 2;
             }
+            
         }
-
+        
         if (botaoPut.isMousePressed()) {
             inputValores.show();
             exibirInput = true;
@@ -209,13 +215,21 @@ public class JanelaArvore extends EngineFrame {
         setFontName(FONT_SANS_SERIF);
         setFontStyle(FONT_BOLD);
 
+        if (mostrarMenu) {
+            bordaMenu.fill(this, corBackground);
+            bordaMenu.draw(this, BLACK);
+            for (GuiButton b : listaBotoes) {
+                b.draw();
+            }
+        }
+        
         beginMode2D(camera);
         arvore.drawArvore(this);
         endMode2D();
 
         inputValores.draw();
 
-        drawText("Tamanho: " + String.valueOf(arvore.getAlturaArvore(arvore.getRaiz())), 30, 30, 20, BLACK);
+        drawText("Altura: " + String.valueOf(arvore.getAlturaArvore(arvore.getRaiz())), 30, 30, 20, BLACK);
 
         if (mouseIn(botaoHambHitBox)) {
             for (int i = 1; i <= 3; i++) {
@@ -227,13 +241,7 @@ public class JanelaArvore extends EngineFrame {
             }
         }
 
-        if (mostrarMenu) {
-            bordaMenu.fill(this, corBackground);
-            bordaMenu.draw(this, BLACK);
-            for (GuiButton b : listaBotoes) {
-                b.draw();
-            }
-        }
+        
     }
 
     protected void atualizarCamera() {

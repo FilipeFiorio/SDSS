@@ -25,7 +25,7 @@ public class ArvoreVermelhaPreta extends Arvore {
         //garante que a raiz sempre seja preta
         raiz.setCor(EngineFrame.BLACK);
         
-        atualizarPosicoes(raiz, 640, 60, distanciaX * 0.6);
+        atualizarPosicoes(raiz, 640, 60, distanciaX);
         if (!listaNode.isEmpty()) {
             Node novo = listaNode.get(listaNode.size() - 1);
             double destinoX = novo.getCentroX();
