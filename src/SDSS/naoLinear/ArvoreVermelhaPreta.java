@@ -21,8 +21,30 @@ public class ArvoreVermelhaPreta extends Arvore {
     @Override
     public void put(int valor) {
         raiz = inserir(raiz, valor);
-        raiz.setCor(EngineFrame.BLACK); // raiz sempre preta
+        
+        //garante que a raiz sempre seja preta
+        raiz.setCor(EngineFrame.BLACK);
+        
         atualizarPosicoes(raiz, 640, 60, distanciaX * 0.6);
+        if (!listaNode.isEmpty()) {
+            Node novo = listaNode.get(listaNode.size() - 1);
+            double destinoX = novo.getCentroX();
+            double destinoY = novo.getCentroY();
+
+            double origemX = 640;
+            double origemY = 40;
+
+            novo.setCentroX(origemX);
+            novo.setCentroY(origemY);
+
+            animacoes.add(new PassoAnimacaoArvore(
+                    novo,
+                    origemX, origemY,
+                    destinoX, destinoY,
+                    TEMPO_ANIMACAO
+            ));
+        }
+
     }
 
     private Node inserir(Node atual, int valor) {
@@ -98,6 +120,7 @@ public class ArvoreVermelhaPreta extends Arvore {
         } else if (valor > atual.getValor()) {
             atual.setFilhoDireita(remover(atual.getFilhoDireita(), valor));
         } else {
+            animarRemocao(atual);
             listaNode.remove(atual);
 
             if (atual.getFilhoEsquerda() == null) {
@@ -119,7 +142,7 @@ public class ArvoreVermelhaPreta extends Arvore {
 
     //Verifica ocorrencias proibidas na AVP e corrige
     private Node corrigirCoresERotacoes(Node node) {
-        
+
         //Verifica se o filho da direita e vermelho e o da esquerda nn --> rotaciona para a esquerda
         if (verificarVermelho(node.getFilhoDireita()) && !verificarVermelho(node.getFilhoEsquerda())) {
             node = rotacaoEsquerda(node);

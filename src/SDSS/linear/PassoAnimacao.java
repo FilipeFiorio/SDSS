@@ -7,7 +7,7 @@ package SDSS.linear;
 
 public class PassoAnimacao {
     
-    private Peca peca;
+    private Peca peca;  
     
     private double xIni; 
     private double yIni;
@@ -35,7 +35,7 @@ public class PassoAnimacao {
         tempoAtual += delta;
         double t = Math.min(1.0, tempoAtual / tempo);
 
-        double xNovo = xIni + (xFinal - xIni) * t;
+        double xNovo = xIni + (xFinal - xIni) * t;      
         double yNovo = yIni + (yFinal - yIni) * t;
 
         peca.setxIni(xNovo);

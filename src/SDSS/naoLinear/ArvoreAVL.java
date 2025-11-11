@@ -1,7 +1,6 @@
 package SDSS.naoLinear;
 
 import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
-import java.util.ArrayList;
 import java.util.List;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
@@ -21,10 +20,28 @@ public class ArvoreAVL extends Arvore {
     public void put(int valor) {
         raiz = inserir(raiz, valor);
 
-        List<Node> listaTemp = new ArrayList<>(listaNode);
-        listaNode = listaTemp;
-
         atualizarPosicoes(raiz, 640, 60, distanciaX);
+
+        if (!listaNode.isEmpty()) {
+            Node novo = listaNode.get(listaNode.size() - 1);
+            double destinoX = novo.getCentroX();
+            double destinoY = novo.getCentroY();
+
+            //declarando os pontos de origem X,Y nas outras classes contem o mesmo codigo(ABB e AVP)
+            double origemX = 640;
+            double origemY = 40;
+
+            novo.setCentroX(origemX);
+            novo.setCentroY(origemY);
+
+            animacoes.add(new PassoAnimacaoArvore(
+                    novo,
+                    origemX, origemY,
+                    destinoX, destinoY,
+                    TEMPO_ANIMACAO
+            ));
+        }
+
     }
 
     private Node inserir(Node atual, int valor) {
@@ -112,7 +129,8 @@ public class ArvoreAVL extends Arvore {
         } else if (valor > atual.getValor()) {
             atual.setFilhoDireita(remover(atual.getFilhoDireita(), valor));
         } else {
-            listaNode.remove(atual); 
+            animarRemocao(atual);
+            listaNode.remove(atual);
 
             if (atual.getFilhoEsquerda() == null && atual.getFilhoDireita() == null) {
                 return null;
@@ -167,7 +185,7 @@ public class ArvoreAVL extends Arvore {
         transformacao(new JanelaArvore("Árvore Binária de Busca", nova));
     }
 
-    @Override 
+    @Override
     public void transformacao2(List<Node> listaNode) {
         ArvoreVermelhaPreta nova = new ArvoreVermelhaPreta();
         for (Integer v : getValores()) {

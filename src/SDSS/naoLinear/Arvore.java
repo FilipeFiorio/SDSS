@@ -1,6 +1,5 @@
 /*TODO: 
         arrumar logo estruturas lineares na tela inicial,
-        criar uma animacao para os nos
  */
 package SDSS.naoLinear;
 
@@ -18,10 +17,13 @@ public abstract class Arvore {
 
     protected final Image logo = loadImage("resources/images/logoSDSS.png");
     protected Node raiz;
+    protected List<PassoAnimacaoArvore> animacoes = new ArrayList<>();
     protected List<Node> listaNode = new ArrayList<>();
 
     protected double distanciaX = 320;
     protected final double distanciaY = 160;
+
+    protected final double TEMPO_ANIMACAO = 0.5;
 
     public Arvore() {
 
@@ -117,8 +119,20 @@ public abstract class Arvore {
             return;
         }
 
-        atual.setCentroX(x);
-        atual.setCentroY(y);
+        if (atual.getCentroX() != 0 || atual.getCentroY() != 0) {
+
+            animacoes.add(new PassoAnimacaoArvore(
+                    atual,
+                    atual.getCentroX(),
+                    atual.getCentroY(),
+                    x,
+                    y,
+                    TEMPO_ANIMACAO
+            ));
+        } else {
+            atual.setCentroX(x);
+            atual.setCentroY(y);
+        }
 
         //comeca a aprtir do no errado, e vai ate chegar numa folha
         if (atual.getFilhoEsquerda() != null) {
@@ -128,5 +142,27 @@ public abstract class Arvore {
         if (atual.getFilhoDireita() != null) {
             atualizarPosicoes(atual.getFilhoDireita(), x + desvioX, y + distanciaY, desvioX / 1.75);
         }
+    }
+
+    public int getTamAnimacoes() {
+        return animacoes.size();
+    }
+
+    public List<PassoAnimacaoArvore> getAnimacoes() {
+        return animacoes;
+    }
+
+    public void animarRemocao(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        animacoes.add(new PassoAnimacaoArvore(
+                node,
+                node.getCentroX(),
+                node.getCentroY(),
+                60, 40,
+                TEMPO_ANIMACAO
+        ));
     }
 }
