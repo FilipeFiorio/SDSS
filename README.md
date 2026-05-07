@@ -20,12 +20,12 @@ Simulador visual de estruturas de dados desenvolvido em Java com a biblioteca [J
 
 ## Como executar
 
-1. faça o download do .zip ou clone o repositório:
+1. Faça o download do .zip ou clone o repositório:
    ```bash
    git clone https://github.com/FilipeFiorio/SDSS.git
    ```
 2. Abra o projeto no **NetBeans IDE**
-3. Execute com a própria IDE (f6)
+3. Execute com a própria IDE (F6)
  
 
 ## Download
