@@ -15,21 +15,18 @@ Simulador visual de estruturas de dados desenvolvido em Java com a biblioteca [J
 ## Tecnologias
 
 - Java
-- JSGE (Java Simple Game Engine) — para renderização visual
-- Apache Ant — gerenciamento de build
+- JSGE (Java Simple Game Engine)
 - NetBeans IDE
 
 ## Como executar
 
-1. Clone o repositório:
+1. faça o download do .zip ou clone o repositório:
    ```bash
    git clone https://github.com/FilipeFiorio/SDSS.git
    ```
 2. Abra o projeto no **NetBeans IDE**
-3. Execute com `Run Project` ou via Ant:
-   ```bash
-   ant run
-   ```
+3. Execute com a própria IDE (f6)
+ 
 
 ## Download
 
